@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Feedback & Survey</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        /* =====================================================
+           RATING STARS
+        ===================================================== */
+
+        .rating-stars {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .rating-stars button {
+            border: none;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            font-size: 32px;
+            color: #d7dce5;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .rating-stars button:hover {
+            transform: scale(1.15);
+        }
+
+        .rating-stars button.active {
+            color: #ffd21f;
+            text-shadow:
+                0 0 5px rgba(255, 210, 31, 0.8),
+                0 0 12px rgba(255, 210, 31, 0.5);
+        }
+
+        .rating-text {
+            margin-left: 10px;
+            font-size: 13px;
+            color: #69738a;
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           WORD COUNTER
+        ===================================================== */
+
+        .feedback-counter {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #69738a;
+        }
+
+        .feedback-counter.warning {
+            color: #d88700;
+            font-weight: 600;
+        }
+
+        .feedback-counter.limit {
+            color: #d72732;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           RECENT FEEDBACK STARS
+        ===================================================== */
+
+        .recent-stars {
+            color: #ffd21f;
+            text-shadow: 0 0 5px rgba(255, 210, 31, 0.45);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+
+                <b>
+                    Cyber Awareness<br>
+                    in Rural Areas
+                </b>
+
+                <small>
+                    Campaign for Rural Development
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="{{ url_for('dashboard') }}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('learning') }}">
+                <i class="fa-solid fa-book-open"></i>
+                Learn Cyber Safety
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Report Cyber Scam
+            </a>
+
+            <a class="active" href="{{ url_for('feedback') }}">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Feedback & Survey
+            </a>
+
+            <a href="{{ url_for('helpline') }}">
+                <i class="fa-solid fa-phone"></i>
+                Emergency & Helpline
+            </a>
+
+            <a href="{{ url_for('government') }}">
+                <i class="fa-solid fa-landmark"></i>
+                Government Resources
+            </a>
+
+            <a href="{{ url_for('events') }}">
+                <i class="fa-solid fa-calendar-days"></i>
+                Upcoming Events
+            </a>
+
+            {% if role == "admin" %}
+
+            <a href="{{ url_for('admin_dashboard') }}">
+                <i class="fa-solid fa-shield-halved"></i>
+                Admin Dashboard
+            </a>
+
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+
+        </nav>
+
+
+        <div class="rural-art"></div>
+
+
+        <div class="side-bottom">
+
+            🛡️ Stay Safe Online,<br>
+            Stay Secure!
+
+            <br><br>
+
+            © 2025 Cyber Awareness Campaign<br>
+            for Rural Development
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         TOP BAR
+    ===================================================== -->
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <i class="fa-solid fa-bars hamb"
+               data-menu></i>
+
+            <span class="top-title">
+                Feedback & Survey
+            </span>
+
+        </div>
+
+
+        <div class="top-right">
+
+            <span class="bell">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <b class="badge">3</b>
+
+            </span>
+
+
+            <div class="userbox">
+
+                <span class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+
+                <span>
+                    Hello,<br>
+                    <b>{{ current_user|capitalize }}</b>
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="main">
+
+        <div class="container">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-head">
+
+                <div>
+
+                    <h1>
+                        Feedback & Survey
+                    </h1>
+
+                    <p>
+                        Help us improve our cyber awareness services by sharing your valuable feedback.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MAIN GRID
+            ================================================= -->
+
+            <div class="grid2">
+
+
+                <!-- =================================================
+                     FEEDBACK FORM
+                ================================================= -->
+
+                <section class="form-panel">
+
+
+                    <!-- TABS -->
+
+                    <div style="
+                        display:flex;
+                        gap:40px;
+                        border-bottom:1px solid #e2e7ef;
+                        margin-bottom:18px;
+                    ">
+
+                        <b style="
+                            padding:10px 30px;
+                            border-bottom:3px solid #075bd7;
+                            color:#075bd7;
+                        ">
+                            Feedback
+                        </b>
+
+                        <b style="
+                            padding:10px 30px;
+                        ">
+                            Survey
+                        </b>
+
+                    </div>
+
+
+                    <!-- FLASH MESSAGE -->
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+
+                        {% for category, msg in messages %}
+
+                            <div class="flash">
+                                {{ msg }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endwith %}
+
+
+
+                    <!-- FORM -->
+
+                    <form method="post">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="field">
+
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input
+                                name="name"
+                                required
+                                placeholder="Enter your full name">
+
+                        </div>
+
+
+
+                        <!-- EMAIL -->
+
+                        <div class="field">
+
+                            <label>
+                                Email Address
+                            </label>
+
+                            <input
+                                name="email"
+                                type="email"
+                                required
+                                placeholder="Enter your email address">
+
+                        </div>
+
+
+
+                        <!-- FEEDBACK -->
+
+                        <div class="field">
+
+                            <label>
+                                Your Feedback
+                            </label>
+
+                            <textarea
+                                id="feedbackMessage"
+                                name="message"
+                                rows="6"
+                                placeholder="Write your feedback here..."
+                                required></textarea>
+
+
+                            <div
+                                id="feedbackCount"
+                                class="feedback-counter">
+
+                                0 / 100 words
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- RATING -->
+
+                        <div class="field">
+
+                            <label>
+                                Rate Your Experience
+                            </label>
+
+
+                            <div class="rating-stars"
+                                 id="ratingStars">
+
+                                <button type="button"
+                                        data-rating="1"
+                                        aria-label="1 star">
+                                    ★
+                                </button>
+
+                                <button type="button"
+                                        data-rating="2"
+                                        aria-label="2 stars">
+                                    ★
+                                </button>
+
+                                <button type="button"
+                                        data-rating="3"
+                                        aria-label="3 stars">
+                                    ★
+                                </button>
+
+                                <button type="button"
+                                        data-rating="4"
+                                        aria-label="4 stars">
+                                    ★
+                                </button>
+
+                                <button type="button"
+                                        data-rating="5"
+                                        aria-label="5 stars">
+                                    ★
+                                </button>
+
+
+                                <!-- IMPORTANT:
+                                     Default is 0, not 5 -->
+
+                                <input
+                                    type="hidden"
+                                    id="ratingValue"
+                                    name="rating"
+                                    value="0">
+
+
+                                <span
+                                    id="ratingText"
+                                    class="rating-text">
+
+                                    Select a rating
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- SUBMIT -->
+
+                        <button
+                            type="submit"
+                            class="btn full">
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                            Submit Feedback
+
+                        </button>
+
+                    </form>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     RIGHT SIDE
+                ================================================= -->
+
+                <section class="side-stack">
+
+
+                    <!-- IMAGE / ILLUSTRATION -->
+
+                    <div class="panel"
+                         style="padding:0;overflow:hidden">
+
+                        <div style="
+                            height:250px;
+                            background:linear-gradient(
+                                135deg,
+                                #eaf3ff,
+                                #cfe2ff
+                            );
+                            display:grid;
+                            place-items:center;
+                            font-size:100px;
+                        ">
+
+                            👩‍💻 💬 ⭐
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         FEEDBACK STATISTICS
+                    ================================================= -->
+
+                    <div class="panel">
+
+                        <h3>
+                            Feedback Statistics
+                        </h3>
+
+
+                        <div class="feedback-stats">
+
+
+                            <div class="fstat">
+
+                                ⭐ Average Rating
+
+                                <strong>
+                                    4.8/5
+                                </strong>
+
+                                <small>
+                                    Based on 1,250 reviews
+                                </small>
+
+                            </div>
+
+
+                            <div class="fstat">
+
+                                😊 Positive Feedback
+
+                                <strong style="color:#199450">
+                                    94%
+                                </strong>
+
+                                <small>
+                                    Users are satisfied
+                                </small>
+
+                            </div>
+
+
+                            <div class="fstat">
+
+                                ✉️ Total Responses
+
+                                <strong style="color:#7132cc">
+                                    1,250
+                                </strong>
+
+                                <small>
+                                    Thank you!
+                                </small>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         RECENT FEEDBACK
+                    ================================================= -->
+
+                    <div class="panel">
+
+                        <div class="panel-title">
+
+                            <h3>
+                                Recent Feedback
+                            </h3>
+
+                            <a>
+                                View All
+                            </a>
+
+                        </div>
+
+
+                        {% for f in recent %}
+
+                        <p>
+
+                            <b>
+                                {{ f.name }}
+                            </b>
+
+                            <span class="recent-stars">
+
+                                {% set rating = f.rating|int %}
+
+                                {% for i in range(rating) %}
+                                    ★
+                                {% endfor %}
+
+                            </span>
+
+                            <br>
+
+                            <small>
+                                {{ f.message }}
+                            </small>
+
+                        </p>
+
+                        {% else %}
+
+
+                        <p>
+
+                            <b>
+                                Amit Patil
+                            </b>
+
+                            <span class="recent-stars">
+                                ★★★★★
+                            </span>
+
+                            <br>
+
+                            <small>
+                                Very helpful and informative platform. Great initiative!
+                            </small>
+
+                        </p>
+
+
+                        <p>
+
+                            <b>
+                                Sneha Kadam
+                            </b>
+
+                            <span class="recent-stars">
+                                ★★★★★
+                            </span>
+
+                            <br>
+
+                            <small>
+                                Easy to use and very useful content. Keep it up!
+                            </small>
+
+                        </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =====================================================
+       STAR RATING
+    ===================================================== */
+
+    const stars =
+        document.querySelectorAll(
+            "#ratingStars button"
+        );
+
+    const ratingValue =
+        document.getElementById(
+            "ratingValue"
+        );
+
+    const ratingText =
+        document.getElementById(
+            "ratingText"
+        );
+
+
+    stars.forEach(function (star) {
+
+        star.addEventListener("click", function () {
+
+            const selectedRating =
+                parseInt(
+                    this.getAttribute("data-rating")
+                );
+
+
+            /* Save rating */
+
+            ratingValue.value =
+                selectedRating;
+
+
+            /* Update stars */
+
+            stars.forEach(function (item) {
+
+                const itemRating =
+                    parseInt(
+                        item.getAttribute("data-rating")
+                    );
+
+                if (itemRating <= selectedRating) {
+
+                    item.classList.add("active");
+
+                } else {
+
+                    item.classList.remove("active");
+
+                }
+
+            });
+
+
+            /* Rating text */
+
+            ratingText.textContent =
+                selectedRating + " / 5";
+
+
+        });
+
+
+        /* Hover effect */
+
+        star.addEventListener("mouseenter", function () {
+
+            const hoverRating =
+                parseInt(
+                    this.getAttribute("data-rating")
+                );
+
+
+            stars.forEach(function (item) {
+
+                const itemRating =
+                    parseInt(
+                        item.getAttribute("data-rating")
+                    );
+
+                if (itemRating <= hoverRating) {
+
+                    item.style.color = "#ffd21f";
+
+                } else {
+
+                    item.style.color = "#d7dce5";
+
+                }
+
+            });
+
+        });
+
+    });
+
+
+    /* Reset hover colour */
+
+    document
+        .getElementById("ratingStars")
+        .addEventListener("mouseleave", function () {
+
+            const selectedRating =
+                parseInt(
+                    ratingValue.value
+                );
+
+
+            stars.forEach(function (item) {
+
+                const itemRating =
+                    parseInt(
+                        item.getAttribute("data-rating")
+                    );
+
+
+                if (itemRating <= selectedRating) {
+
+                    item.style.color = "#ffd21f";
+
+                } else {
+
+                    item.style.color = "#d7dce5";
+
+                }
+
+            });
+
+        });
+
+
+
+    /* =====================================================
+       WORD COUNTER
+    ===================================================== */
+
+    const feedbackBox =
+        document.getElementById(
+            "feedbackMessage"
+        );
+
+    const feedbackCount =
+        document.getElementById(
+            "feedbackCount"
+        );
+
+
+    const MAX_WORDS = 100;
+
+
+    function countWords(text) {
+
+        text = text.trim();
+
+        if (!text) {
+            return 0;
+        }
+
+        return text.split(/\s+/).length;
+
+    }
+
+
+    function updateWordCounter() {
+
+        let text =
+            feedbackBox.value;
+
+
+        let words =
+            countWords(text);
+
+
+        /* Prevent more than 100 words */
+
+        if (words > MAX_WORDS) {
+
+            const wordArray =
+                text.trim().split(/\s+/);
+
+            wordArray.length =
+                MAX_WORDS;
+
+            feedbackBox.value =
+                wordArray.join(" ");
+
+            words =
+                MAX_WORDS;
+
+        }
+
+
+        feedbackCount.textContent =
+            words + " / " + MAX_WORDS + " words";
+
+
+        /* Counter colours */
+
+        feedbackCount.classList.remove(
+            "warning",
+            "limit"
+        );
+
+
+        if (words >= MAX_WORDS) {
+
+            feedbackCount.classList.add(
+                "limit"
+            );
+
+        } else if (words >= 80) {
+
+            feedbackCount.classList.add(
+                "warning"
+            );
+
+        }
+
+    }
+
+
+    feedbackBox.addEventListener(
+        "input",
+        updateWordCounter
+    );
+
+
+    /* Initial counter */
+
+    updateWordCounter();
+
+
+
+    /* =====================================================
+       FORM VALIDATION
+    ===================================================== */
+
+    const form =
+        document.querySelector("form");
+
+
+    form.addEventListener("submit", function (event) {
+
+
+        const selectedRating =
+            parseInt(
+                ratingValue.value
+            );
+
+
+        if (
+            !selectedRating ||
+            selectedRating < 1 ||
+            selectedRating > 5
+        ) {
+
+            event.preventDefault();
+
+            alert(
+                "Please select a rating from 1 to 5 stars."
+            );
+
+            return;
+
+        }
+
+
+        const words =
+            countWords(
+                feedbackBox.value
+            );
+
+
+        if (words === 0) {
+
+            event.preventDefault();
+
+            alert(
+                "Please write your feedback."
+            );
+
+            feedbackBox.focus();
+
+            return;
+
+        }
+
+
+        if (words > MAX_WORDS) {
+
+            event.preventDefault();
+
+            alert(
+                "Feedback cannot exceed 100 words."
+            );
+
+            feedbackBox.focus();
+
+            return;
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

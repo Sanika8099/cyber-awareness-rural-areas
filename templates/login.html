@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login - Cyber Awareness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <!-- ================= LEFT SIDE ================= -->
+
+    <section class="login-left">
+
+        <div class="login-brand">
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <div>
+                <strong>Cyber Awareness</strong><br>
+                <small>for Rural Development</small>
+            </div>
+        </div>
+
+        <h1>
+            Be Aware.<br>
+            <span>Be Safe.</span><br>
+            Be Secure.
+        </h1>
+
+        <p>
+            Join hands to build a safe and secure
+            digital rural community.
+        </p>
+
+        <div class="login-art"></div>
+
+        <div class="login-values">
+
+            <div>
+                <i class="fa-solid fa-shield"></i>
+                <b>Stay Informed</b>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-users"></i>
+                <b>Stay Protected</b>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-phone"></i>
+                <b>Report & Help</b>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-book-open"></i>
+                <b>Learn & Grow</b>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= RIGHT SIDE ================= -->
+
+    <section class="login-right">
+
+        <form class="login-card"
+              method="POST"
+              action="{{ url_for('login') }}"
+              autocomplete="off">
+
+            <!-- ICON -->
+
+            <div style="
+                text-align:center;
+                font-size:48px;
+                color:#075bd7;
+                margin-bottom:5px;
+            ">
+                <i class="fa-solid fa-laptop-code"></i>
+            </div>
+
+
+            <h2>Welcome Back!</h2>
+
+            <p>
+                Login to continue to your account
+            </p>
+
+
+            <!-- FLASH MESSAGES -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% for category, msg in messages %}
+
+                    <div class="flash {{ 'error' if category == 'error' else '' }}"
+                         style="position:static;margin-bottom:18px;">
+
+                        {{ msg }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endwith %}
+
+
+            <!-- USERNAME -->
+
+            <div class="field">
+
+                <label>
+                    <i class="fa-solid fa-user"></i>
+                    Email / Username
+                </label>
+
+                <input
+                    type="text"
+                    name="username"
+                    required
+                    placeholder="Enter your username"
+                    autocomplete="off"
+                    autocapitalize="none">
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="field">
+
+                <label>
+                    <i class="fa-solid fa-lock"></i>
+                    Password
+                </label>
+
+                <div style="position:relative;">
+
+                    <input
+                        type="password"
+                        name="password"
+                        id="loginPassword"
+                        required
+                        placeholder="Enter your password"
+                        autocomplete="new-password"
+                        style="padding-right:48px;">
+
+                    <i
+                        class="fa-solid fa-eye"
+                        id="toggleLoginPassword"
+                        style="
+                            position:absolute;
+                            right:15px;
+                            top:50%;
+                            transform:translateY(-50%);
+                            cursor:pointer;
+                            color:#69738a;
+                        ">
+                    </i>
+
+                </div>
+
+            </div>
+
+
+            <!-- OPTIONS -->
+
+            <div style="
+                display:flex;
+                gap:8px;
+                align-items:center;
+                margin:10px 0 25px;
+                font-size:13px;
+            ">
+
+                <label style="
+                    display:flex;
+                    align-items:center;
+                    gap:7px;
+                    cursor:pointer;
+                ">
+
+                    <input
+                        type="checkbox"
+                        autocomplete="off">
+
+                    Remember me
+
+                </label>
+
+
+                <a
+                    href="#"
+                    onclick="return false;"
+                    style="
+                        margin-left:auto;
+                        color:#075bd7;
+                        font-weight:500;
+                    ">
+
+                    Forgot Password?
+
+                </a>
+
+            </div>
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="submit"
+                class="btn login-submit">
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+
+                Login
+
+            </button>
+
+
+            <!-- REGISTER -->
+
+            <p style="
+                margin:22px 0 0;
+                text-align:center;
+                color:#69738a;
+                font-size:14px;
+            ">
+
+                Don't have an account?
+
+                <a
+                    href="{{ url_for('register') }}"
+                    style="
+                        color:#075bd7;
+                        font-weight:600;
+                    ">
+
+                    Register here
+
+                </a>
+
+            </p>
+
+
+            <!-- SECURITY NOTE -->
+
+            <div class="login-note">
+
+                <b>
+                    🛡️ Your safety is important to us.
+                </b>
+
+                <br>
+
+                <small>
+                    Learn, stay aware and report any cyber crime.
+                </small>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<!-- ================= PASSWORD SCRIPT ================= -->
+
+<script>
+
+const loginPassword =
+    document.getElementById("loginPassword");
+
+const toggleLoginPassword =
+    document.getElementById("toggleLoginPassword");
+
+
+toggleLoginPassword.addEventListener("click", function () {
+
+    if (loginPassword.type === "password") {
+
+        loginPassword.type = "text";
+
+        this.classList.remove("fa-eye");
+        this.classList.add("fa-eye-slash");
+
+    } else {
+
+        loginPassword.type = "password";
+
+        this.classList.remove("fa-eye-slash");
+        this.classList.add("fa-eye");
+
+    }
+
+});
+
+</script>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

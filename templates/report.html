@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report Cyber Scam</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        /* =====================================================
+           REPORT PAGE
+        ===================================================== */
+
+        .report-page {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .report-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 330px;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .form-panel {
+            min-width: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .full-span {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .field textarea {
+            min-height: 115px;
+            resize: vertical;
+        }
+
+        .evidence-note {
+            display: block;
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           SUCCESS / ERROR
+        ===================================================== */
+
+        .flash-success {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #15803d;
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .flash-error {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #b91c1c;
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           RIGHT SIDE
+        ===================================================== */
+
+        .side-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .panel {
+            border-radius: 10px;
+        }
+
+
+        /* =====================================================
+           RECENT REPORTS
+        ===================================================== */
+
+        .reports-section {
+            margin-top: 24px;
+            background: #ffffff;
+            border: 1px solid #e1e6ed;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.04);
+        }
+
+        .reports-header {
+            padding: 17px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .reports-header h2 {
+            margin: 0;
+            font-size: 19px;
+            color: #111827;
+        }
+
+        .reports-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .reports-table th {
+            background: #f5f7fa;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .reports-table td {
+            padding: 13px 16px;
+            font-size: 13px;
+            color: #374151;
+            border-bottom: 1px solid #edf0f3;
+        }
+
+        .reports-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 6px;
+            background: #fff7d6;
+            color: #927400;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .view-btn {
+            border: none;
+            background: none;
+            color: #075fa9;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .view-btn:hover {
+            text-decoration: underline;
+        }
+
+        .no-reports {
+            padding: 22px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .submit-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            .report-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-span {
+                grid-column: auto;
+            }
+
+            .reports-table {
+                min-width: 650px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+            </div>
+
+            <div>
+
+                <b>
+                    Cyber Awareness<br>
+                    in Rural Areas
+                </b>
+
+                <small>
+                    Campaign for Rural Development
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="{{ url_for('dashboard') }}">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </a>
+
+
+            <a href="{{ url_for('learning') }}">
+
+                <i class="fa-solid fa-book-open"></i>
+
+                Learn Cyber Safety
+
+            </a>
+
+
+            <a class="active"
+               href="{{ url_for('report') }}">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                Report Cyber Scam
+
+            </a>
+
+
+            <a href="{{ url_for('feedback') }}">
+
+                <i class="fa-solid fa-pen-to-square"></i>
+
+                Feedback & Survey
+
+            </a>
+
+
+            <a href="{{ url_for('helpline') }}">
+
+                <i class="fa-solid fa-phone"></i>
+
+                Emergency & Helpline
+
+            </a>
+
+
+            <a href="{{ url_for('government') }}">
+
+                <i class="fa-solid fa-landmark"></i>
+
+                Government Resources
+
+            </a>
+
+
+            <a href="{{ url_for('events') }}">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                Upcoming Events
+
+            </a>
+
+
+            <a href="{{ url_for('admin_dashboard') }}">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Admin Dashboard
+
+            </a>
+
+
+            <a href="{{ url_for('logout') }}">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </a>
+
+        </nav>
+
+
+        <div class="rural-art"></div>
+
+
+        <div class="side-bottom">
+
+            🛡️ Stay Safe Online,<br>
+
+            Stay Secure!
+
+            <br><br>
+
+            © 2025 Cyber Awareness Campaign<br>
+
+            for Rural Development
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         TOPBAR
+    ===================================================== -->
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <i class="fa-solid fa-bars hamb"
+               data-menu></i>
+
+            <span class="top-title">
+
+                Report Cyber Scam
+
+            </span>
+
+        </div>
+
+
+        <div class="top-right">
+
+            <span class="bell">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <b class="badge">
+                    3
+                </b>
+
+            </span>
+
+
+            <div class="userbox">
+
+                <span class="avatar">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </span>
+
+                <span>
+
+                    Hello,<br>
+
+                    <b>
+                        {{ current_user|capitalize }}
+                    </b>
+
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="main">
+
+        <div class="container report-page">
+
+
+            <!-- =================================================
+                 REPORT + RIGHT SIDE
+            ================================================= -->
+
+            <div class="report-layout">
+
+
+                <!-- =================================================
+                     REPORT FORM
+                ================================================= -->
+
+                <section class="form-panel">
+
+
+                    <div class="page-head">
+
+                        <div>
+
+                            <h1>
+                                Report a Cyber Scam
+                            </h1>
+
+                            <p>
+                                Report cyber fraud, suspicious calls,
+                                messages, websites or other online scams.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         FLASH MESSAGE
+                    ================================================= -->
+
+                    {% with messages =
+                        get_flashed_messages(with_categories=true) %}
+
+                        {% for category, message in messages %}
+
+                            {% if category == "success" %}
+
+                                <div class="flash-success">
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                    {{ message }}
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="flash-error">
+
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                                    {{ message }}
+
+                                </div>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% endwith %}
+
+
+
+                    <!-- =================================================
+                         FORM
+                    ================================================= -->
+
+                    <form method="POST"
+                          enctype="multipart/form-data"
+                          id="reportForm">
+
+
+                        <div class="form-grid">
+
+
+                            <!-- SCAM TYPE -->
+
+                            <div class="field">
+
+                                <label>
+
+                                    Type of Scam
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <select name="scam_type"
+                                        required>
+
+                                    <option value="">
+                                        -- Select Scam Type --
+                                    </option>
+
+                                    <option value="Phishing">
+                                        Phishing
+                                    </option>
+
+                                    <option value="UPI Fraud">
+                                        UPI Fraud
+                                    </option>
+
+                                    <option value="Fake Call">
+                                        Fake Call
+                                    </option>
+
+                                    <option value="Online Scam">
+                                        Online Scam
+                                    </option>
+
+                                    <option value="Identity Theft">
+                                        Identity Theft
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- DATE -->
+
+                            <div class="field">
+
+                                <label>
+
+                                    Date & Time of Incident
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <input
+                                    type="datetime-local"
+                                    name="incident_date"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- DESCRIPTION -->
+
+                            <div class="field full-span">
+
+                                <label>
+
+                                    Description of Incident
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <textarea
+                                    name="description"
+                                    maxlength="500"
+                                    required
+                                    placeholder="Please describe the scam incident in detail..."
+                                ></textarea>
+
+                            </div>
+
+
+
+                            <!-- CONTACT -->
+
+                            <div class="field">
+
+                                <label>
+
+                                    Phone Number / Email / Website
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    name="contact"
+                                    placeholder="Enter phone number, email or website"
+                                >
+
+                            </div>
+
+
+
+                            <!-- LOSS -->
+
+                            <div class="field">
+
+                                <label>
+
+                                    Financial Loss Incurred?
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <label
+                                    style="display:inline-flex;
+                                           margin-right:25px;"
+                                >
+
+                                    <input
+                                        type="radio"
+                                        name="loss"
+                                        value="Yes"
+                                        required
+                                    >
+
+                                    Yes
+
+                                </label>
+
+
+                                <label
+                                    style="display:inline-flex;"
+                                >
+
+                                    <input
+                                        type="radio"
+                                        name="loss"
+                                        value="No"
+                                    >
+
+                                    No
+
+                                </label>
+
+                            </div>
+
+
+
+                            <!-- EVIDENCE -->
+
+                            <div class="field full-span">
+
+                                <label>
+
+                                    Upload Evidence
+                                    (Screenshot / Document)
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <input
+                                    type="file"
+                                    name="evidence"
+                                    accept=".jpg,.jpeg,.png,.pdf"
+                                    required
+                                >
+
+
+                                <small class="evidence-note">
+
+                                    Evidence is compulsory.
+                                    JPG, JPEG, PNG or PDF only.
+
+                                </small>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             BUTTONS
+                        ================================================= -->
+
+                        <div class="submit-buttons">
+
+
+                            <button
+                                type="reset"
+                                class="btn outline"
+                            >
+
+                                ↻ Reset
+
+                            </button>
+
+
+                            <button
+                                type="submit"
+                                class="btn"
+                            >
+
+                                Submit Report ➤
+
+                            </button>
+
+
+                        </div>
+
+
+
+                        <!-- NOTICE -->
+
+                        <div class="notice"
+                             style="margin-top:15px;">
+
+                            ⓘ All reports are confidential and used only
+                            for awareness and prevention.
+
+                        </div>
+
+
+                    </form>
+
+
+                </section>
+
+
+
+                <!-- =================================================
+                     RIGHT SIDE
+                ================================================= -->
+
+                <aside class="side-stack">
+
+
+                    <!-- WHAT HAPPENS -->
+
+                    <section class="panel">
+
+                        <h2>
+                            What happens next?
+                        </h2>
+
+
+                        <ul class="checklist">
+
+                            <li>
+                                🔵 We receive your report.
+                            </li>
+
+                            <li>
+                                🔵 Our team reviews the details.
+                            </li>
+
+                            <li>
+                                🔵 If required, the report is forwarded
+                                to appropriate authorities.
+                            </li>
+
+                            <li>
+                                🔵 You will be notified on the
+                                registered contact.
+                            </li>
+
+                        </ul>
+
+                    </section>
+
+
+
+                    <!-- TIPS -->
+
+                    <section class="panel"
+                             style="background:#fffaf0;">
+
+                        <h3>
+                            💡 Important Tips
+                        </h3>
+
+
+                        <ul class="checklist">
+
+                            <li>
+                                🟡 Do not share OTP, PIN or passwords.
+                            </li>
+
+                            <li>
+                                🟡 Do not click on suspicious links.
+                            </li>
+
+                            <li>
+                                🟡 Do not share personal or banking details.
+                            </li>
+
+                            <li>
+                                🟡 Report immediately if you suspect a scam.
+                            </li>
+
+                        </ul>
+
+                    </section>
+
+
+
+                    <!-- HELPLINE -->
+
+                    <section class="panel"
+                             style="background:#fff5f5;">
+
+                        <h3>
+                            Emergency Helpline
+                        </h3>
+
+
+                        <p>
+                            National Cyber Crime Helpline
+                        </p>
+
+
+                        <strong
+                            style="font-size:27px;color:#d92732;"
+                        >
+
+                            ☎ 1930
+
+                        </strong>
+
+
+                        <a
+                            class="btn red"
+                            style="float:right;"
+                            href="tel:1930"
+                        >
+
+                            Call Now
+
+                        </a>
+
+
+                        <hr>
+
+
+                        <p>
+                            Women Helpline
+                        </p>
+
+
+                        <strong
+                            style="font-size:23px;color:#d92732;"
+                        >
+
+                            181
+
+                        </strong>
+
+                    </section>
+
+
+                </aside>
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 YOUR RECENT REPORTS
+            ===================================================== -->
+
+            <section class="reports-section">
+
+
+                <div class="reports-header">
+
+                    <h2>
+                        Your Recent Reports
+                    </h2>
+
+                </div>
+
+
+                <div class="reports-table-wrapper">
+
+                    <table class="reports-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    SR No.
+                                </th>
+
+                                <th>
+                                    Type of Scam
+                                </th>
+
+                                <th>
+                                    Date & Time
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="reportsBody">
+
+                            <!-- Reports will appear here -->
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    id="noReports"
+                    class="no-reports"
+                >
+
+                    No reports submitted yet.
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================= -->
+
+<script>
+
+
+/* ============================================================
+   PAGE LOAD
+============================================================ */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    const form =
+        document.getElementById("reportForm");
+
+
+    /* Display saved reports */
+
+    displayReports();
+
+
+
+    /* ========================================================
+       SAVE REPORT
+    ======================================================== */
+
+    form.addEventListener("submit", function (event) {
+
+
+        /*
+         * IMPORTANT:
+         * We save the report in browser storage.
+         */
+
+        const scamType =
+            document.querySelector(
+                '[name="scam_type"]'
+            ).value;
+
+
+        const incidentDate =
+            document.querySelector(
+                '[name="incident_date"]'
+            ).value;
+
+
+        const description =
+            document.querySelector(
+                '[name="description"]'
+            ).value;
+
+
+        const contact =
+            document.querySelector(
+                '[name="contact"]'
+            ).value;
+
+
+        const lossElement =
+            document.querySelector(
+                '[name="loss"]:checked'
+            );
+
+
+        const loss =
+            lossElement
+                ? lossElement.value
+                : "";
+
+
+
+        /* Create report */
+
+        const newReport = {
+
+            submittedBy:
+                "{{ current_user|default('Admin')|e }}",
+
+            scamType:
+                scamType,
+
+            incidentDate:
+                incidentDate,
+
+            description:
+                description,
+
+            contact:
+                contact,
+
+            loss:
+                loss,
+
+            status:
+                "Pending"
+
+        };
+
+
+
+        /* Get previous reports */
+
+        let reports =
+            JSON.parse(
+                localStorage.getItem(
+                    "cyberReports"
+                )
+            ) || [];
+
+
+
+        /* Add newest report first */
+
+        reports.unshift(newReport);
+
+
+
+        /* Save */
+
+        localStorage.setItem(
+            "cyberReports",
+            JSON.stringify(reports)
+        );
+
+
+
+        /*
+         * IMPORTANT:
+         *
+         * We do NOT prevent the normal form submission.
+         *
+         * Flask will receive the form normally.
+         */
+
+    });
+
+});
+
+
+
+/* ============================================================
+   DISPLAY REPORTS
+============================================================ */
+
+function displayReports() {
+
+
+    const reportsBody =
+        document.getElementById(
+            "reportsBody"
+        );
+
+
+    const noReports =
+        document.getElementById(
+            "noReports"
+        );
+
+
+
+    /* Get saved reports */
+
+    let reports =
+        JSON.parse(
+            localStorage.getItem(
+                "cyberReports"
+            )
+        ) || [];
+
+
+
+    /* Clear table */
+
+    reportsBody.innerHTML = "";
+
+
+
+    /* No reports */
+
+    if (reports.length === 0) {
+
+        noReports.style.display =
+            "block";
+
+        return;
+    }
+
+
+
+    /* Hide no reports */
+
+    noReports.style.display =
+        "none";
+
+
+
+    /* Add each report */
+
+    reports.forEach(
+        function (report, index) {
+
+
+            const row =
+                document.createElement("tr");
+
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+
+                <td>
+                    ${escapeHTML(report.scamType)}
+                </td>
+
+
+                <td>
+                    ${escapeHTML(report.incidentDate)}
+                </td>
+
+
+                <td>
+
+                    <span class="status">
+
+                        ${escapeHTML(report.status)}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        type="button"
+                        class="view-btn"
+                        onclick="showReportDetails(${index})"
+                    >
+
+                        <i class="fa-regular fa-eye"></i>
+
+                        View
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+
+            reportsBody.appendChild(row);
+
+        }
+    );
+
+}
+
+
+
+/* ============================================================
+   VIEW REPORT DETAILS
+============================================================ */
+
+function showReportDetails(index) {
+
+
+    let reports =
+        JSON.parse(
+            localStorage.getItem(
+                "cyberReports"
+            )
+        ) || [];
+
+
+    const report =
+        reports[index];
+
+
+    if (!report) {
+
+        return;
+
+    }
+
+
+
+    alert(
+
+        "REPORT DETAILS\n\n" +
+
+        "Submitted By: " +
+        report.submittedBy +
+
+        "\n\n" +
+
+        "Type of Scam: " +
+        report.scamType +
+
+        "\n\n" +
+
+        "Date & Time: " +
+        report.incidentDate +
+
+        "\n\n" +
+
+        "Description: " +
+        report.description +
+
+        "\n\n" +
+
+        "Contact: " +
+        (
+            report.contact ||
+            "Not provided"
+        ) +
+
+        "\n\n" +
+
+        "Financial Loss: " +
+        report.loss +
+
+        "\n\n" +
+
+        "Status: " +
+        report.status
+
+    );
+
+}
+
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHTML(value) {
+
+
+    if (!value) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

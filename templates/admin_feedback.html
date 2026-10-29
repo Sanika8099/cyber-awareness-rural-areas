@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Feedback | Cyber Awareness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        .feedback-table-wrap {
+            overflow-x: auto;
+        }
+
+        .feedback-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .feedback-table th,
+        .feedback-table td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #edf1f7;
+            vertical-align: top;
+        }
+
+        .feedback-table th {
+            background: #f8faff;
+            color: #536078;
+            font-size: 13px;
+        }
+
+        .feedback-table td {
+            font-size: 14px;
+        }
+
+        .feedback-message {
+            max-width: 360px;
+            line-height: 1.5;
+        }
+
+        .stars {
+            color: #f2a900;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .rating-number {
+            font-weight: 700;
+            color: #075bd7;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 15px;
+            color: #69738a;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                <b>
+                    Cyber Awareness<br>
+                    in Rural Areas
+                </b>
+
+                <small>
+                    Campaign for Rural Development
+                </small>
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="{{ url_for('dashboard') }}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('learning') }}">
+                <i class="fa-solid fa-book-open"></i>
+                Learn Cyber Safety
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Report Cyber Scam
+            </a>
+
+            <a href="{{ url_for('feedback') }}">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Feedback & Survey
+            </a>
+
+            <a href="{{ url_for('helpline') }}">
+                <i class="fa-solid fa-phone"></i>
+                Emergency & Helpline
+            </a>
+
+            <a href="{{ url_for('government') }}">
+                <i class="fa-solid fa-landmark"></i>
+                Government Resources
+            </a>
+
+            <a href="{{ url_for('events') }}">
+                <i class="fa-solid fa-calendar-days"></i>
+                Upcoming Events
+            </a>
+
+            <a class="active"
+               href="{{ url_for('admin_dashboard') }}">
+                <i class="fa-solid fa-user-shield"></i>
+                Admin Dashboard
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+
+        </nav>
+
+
+        <div class="rural-art"></div>
+
+
+        <div class="side-bottom">
+
+            🛡️ Stay Safe Online,<br>
+            Stay Secure!
+
+            <br><br>
+
+            © 2025 Cyber Awareness Campaign<br>
+            for Rural Development
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= TOPBAR ================= -->
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <i class="fa-solid fa-bars hamb" data-menu></i>
+
+            <span class="top-title">
+                Feedback Management
+            </span>
+
+        </div>
+
+
+        <div class="top-right">
+
+            <span class="bell">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <b class="badge">
+                    {{ feedback_list|length }}
+                </b>
+
+            </span>
+
+
+            <div class="userbox">
+
+                <span class="avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </span>
+
+                <span>
+                    Hello,<br>
+                    <b>{{ current_user|capitalize }}</b>
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <div class="container">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-head">
+
+                <div>
+
+                    <h1>
+                        Feedback & Survey Management
+                    </h1>
+
+                    <p>
+                        Review feedback submitted by citizens and monitor
+                        their experience with the cyber awareness campaign.
+                    </p>
+
+                </div>
+
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="btn outline">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Admin Dashboard
+
+                </a>
+
+            </div>
+
+
+
+            <!-- STATISTICS -->
+
+            <div class="cards">
+
+
+                <div class="stat">
+
+                    <div class="iconbox">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Total Feedback</h4>
+
+                        <strong>
+                            {{ feedback_list|length }}
+                        </strong>
+
+                        <small>
+                            Submitted responses
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#fff5df;color:#e99d00;">
+
+                        <i class="fa-solid fa-star"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Average Rating</h4>
+
+                        {% if feedback_list|length > 0 %}
+
+                            {% set total_rating = namespace(value=0) %}
+
+                            {% for f in feedback_list %}
+                                {% set total_rating.value =
+                                   total_rating.value + (f.rating|int) %}
+                            {% endfor %}
+
+                            <strong>
+                                {{ "%.1f"|format(total_rating.value / feedback_list|length) }}
+                            </strong>
+
+                        {% else %}
+
+                            <strong>0.0</strong>
+
+                        {% endif %}
+
+                        <small>
+                            Out of 5
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#eaf2ff;color:#075bd7;">
+
+                        <i class="fa-solid fa-message"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Citizen Responses</h4>
+
+                        <strong>
+                            {{ feedback_list|length }}
+                        </strong>
+
+                        <small>
+                            Community feedback
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#e4f8ed;color:#18824a;">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Status</h4>
+
+                        <strong style="font-size:22px;">
+                            Active
+                        </strong>
+
+                        <small>
+                            Feedback system online
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FEEDBACK TABLE -->
+
+            <section class="panel">
+
+                <div class="panel-title">
+
+                    <h3>
+
+                        <i class="fa-solid fa-comments"
+                           style="color:#075bd7;"></i>
+
+                        Submitted Feedback
+
+                    </h3>
+
+                    <span class="pill">
+                        {{ feedback_list|length }} Responses
+                    </span>
+
+                </div>
+
+
+                <div class="feedback-table-wrap">
+
+                    <table class="feedback-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Name</th>
+
+                                <th>Email</th>
+
+                                <th>Rating</th>
+
+                                <th>Message</th>
+
+                                <th>Date</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for f in feedback_list %}
+
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        #{{ f.id }}
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    {{ f.name or "Anonymous" }}
+                                </td>
+
+
+                                <td>
+                                    {{ f.email or "Not provided" }}
+                                </td>
+
+
+                                <td>
+
+                                    <div class="stars">
+
+                                        {% for i in range(f.rating|int) %}
+                                            ★
+                                        {% endfor %}
+
+                                        {% for i in range(5 - (f.rating|int)) %}
+                                            ☆
+                                        {% endfor %}
+
+                                    </div>
+
+                                    <span class="rating-number">
+                                        {{ f.rating }}/5
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="feedback-message">
+
+                                        {{ f.message or "No message provided." }}
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+                                    {{ f.created_at[:10] if f.created_at else "—" }}
+                                </td>
+
+                            </tr>
+
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="6">
+
+                                    <div class="empty-state">
+
+                                        <i class="fa-solid fa-comment-slash"></i>
+
+                                        <h3>
+                                            No Feedback Yet
+                                        </h3>
+
+                                        <p>
+                                            Citizen feedback will appear here
+                                            after users submit the feedback form.
+                                        </p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- FEEDBACK INSIGHT -->
+
+            <section class="panel" style="margin-top:18px;">
+
+                <h3>
+
+                    <i class="fa-solid fa-lightbulb"
+                       style="color:#e99d00;"></i>
+
+                    Why Feedback Matters
+
+                </h3>
+
+                <div class="grid2">
+
+                    <div>
+
+                        <p>
+
+                            <i class="fa-solid fa-users"
+                               style="color:#075bd7;"></i>
+
+                            Feedback helps understand how effectively
+                            cyber awareness information reaches rural
+                            communities.
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p>
+
+                            <i class="fa-solid fa-chart-line"
+                               style="color:#18824a;"></i>
+
+                            Ratings help administrators monitor the
+                            overall quality of the campaign.
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p>
+
+                            <i class="fa-solid fa-comments"
+                               style="color:#075bd7;"></i>
+
+                            Citizen suggestions can help improve future
+                            awareness activities.
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p>
+
+                            <i class="fa-solid fa-shield-halved"
+                               style="color:#6937c9;"></i>
+
+                            Continuous feedback supports a safer and
+                            more cyber-aware rural community.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- FOOTER -->
+
+            <div class="footer">
+
+                <span>
+                    © 2025 Cyber Awareness Campaign for Rural Development
+                    | All Rights Reserved
+                </span>
+
+                <span>
+                    About Us | Privacy Policy | Terms & Conditions | Contact Us
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Cyber Awareness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <!-- LEFT SIDE -->
+    <div class="login-left">
+
+        <div class="login-brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                Cyber Awareness<br>
+                <small>in Rural Areas</small>
+            </div>
+        </div>
+
+        <h1>
+            Join the <span>Cyber Safe</span><br>
+            Community
+        </h1>
+
+        <p>
+            Create your account and learn how to stay safe
+            from online scams, frauds and cyber threats.
+        </p>
+
+        <div class="login-art"></div>
+
+        <div class="login-values">
+
+            <div>
+                <i class="fa-solid fa-shield-halved"></i>
+                <small>Stay Safe</small>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-book-open"></i>
+                <small>Learn</small>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <small>Report</small>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-users"></i>
+                <small>Community</small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT SIDE -->
+    <div class="login-right">
+
+        <div class="login-card">
+
+            <div style="text-align:center;">
+
+                <div class="avatar"
+                     style="margin:auto; width:60px; height:60px; font-size:27px;">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+
+            </div>
+
+            <h2>Create Account</h2>
+
+            <p>
+                Join our Cyber Awareness community
+            </p>
+
+
+            <!-- FLASH MESSAGE -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="flash {{ 'error' if category == 'error' else '' }}"
+                             style="position:static; margin-bottom:18px;">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- REGISTER FORM -->
+
+            <form method="POST"
+                  action="{{ url_for('register') }}"
+                  autocomplete="off">
+
+                <!-- FULL NAME -->
+
+                <div class="field">
+
+                    <label>
+                        <i class="fa-solid fa-user"></i>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="full_name"
+                        placeholder="Enter your full name"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="field">
+
+                    <label>
+                        <i class="fa-solid fa-envelope"></i>
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+
+                <!-- USERNAME -->
+
+                <div class="field">
+
+                    <label>
+                        <i class="fa-solid fa-at"></i>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Choose a username"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="field">
+
+                    <label>
+                        <i class="fa-solid fa-lock"></i>
+                        Password
+                    </label>
+
+                    <div style="position:relative;">
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="registerPassword"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                            style="padding-right:45px;">
+
+                        <i class="fa-solid fa-eye"
+                           id="toggleRegisterPassword"
+                           style="
+                               position:absolute;
+                               right:15px;
+                               top:50%;
+                               transform:translateY(-50%);
+                               cursor:pointer;
+                               color:#69738a;
+                           "></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <div class="field">
+
+                    <label>
+                        <i class="fa-solid fa-lock"></i>
+                        Confirm Password
+                    </label>
+
+                    <div style="position:relative;">
+
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            id="confirmPassword"
+                            placeholder="Re-enter your password"
+                            autocomplete="new-password"
+                            required
+                            style="padding-right:45px;">
+
+                        <i class="fa-solid fa-eye"
+                           id="toggleConfirmPassword"
+                           style="
+                               position:absolute;
+                               right:15px;
+                               top:50%;
+                               transform:translateY(-50%);
+                               cursor:pointer;
+                               color:#69738a;
+                           "></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="btn login-submit">
+
+                    <i class="fa-solid fa-user-plus"></i>
+                    Create Account
+
+                </button>
+
+            </form>
+
+
+            <!-- LOGIN LINK -->
+
+            <div style="
+                text-align:center;
+                margin-top:25px;
+                color:#69738a;
+                font-size:14px;
+            ">
+
+                Already have an account?
+
+                <a href="{{ url_for('login') }}"
+                   style="
+                       color:#075bd7;
+                       font-weight:600;
+                   ">
+
+                    Login here
+
+                </a>
+
+            </div>
+
+
+            <div class="login-note">
+
+                <i class="fa-solid fa-shield-halved"
+                   style="color:#075bd7;"></i>
+
+                <strong>Your safety matters.</strong>
+
+                <br>
+
+                Your account helps you access cyber safety
+                learning resources and report suspicious activities.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // Password visibility
+    const password = document.getElementById("registerPassword");
+    const togglePassword = document.getElementById("toggleRegisterPassword");
+
+    togglePassword.addEventListener("click", function () {
+
+        if (password.type === "password") {
+            password.type = "text";
+            this.classList.remove("fa-eye");
+            this.classList.add("fa-eye-slash");
+        } else {
+            password.type = "password";
+            this.classList.remove("fa-eye-slash");
+            this.classList.add("fa-eye");
+        }
+
+    });
+
+
+    // Confirm password visibility
+    const confirmPassword = document.getElementById("confirmPassword");
+    const toggleConfirm = document.getElementById("toggleConfirmPassword");
+
+    toggleConfirm.addEventListener("click", function () {
+
+        if (confirmPassword.type === "password") {
+            confirmPassword.type = "text";
+            this.classList.remove("fa-eye");
+            this.classList.add("fa-eye-slash");
+        } else {
+            confirmPassword.type = "password";
+            this.classList.remove("fa-eye-slash");
+            this.classList.add("fa-eye");
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

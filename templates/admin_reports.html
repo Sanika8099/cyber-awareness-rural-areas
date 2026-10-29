@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Reports | Cyber Awareness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        .report-filters {
+            display:flex;
+            gap:8px;
+            flex-wrap:wrap;
+            margin:0 0 18px 0;
+        }
+        .report-filter-btn {
+            border:1px solid #dce6f5;
+            background:#f7faff;
+            color:#52617a;
+            padding:8px 14px;
+            border-radius:8px;
+            font-family:inherit;
+            font-size:12px;
+            cursor:pointer;
+            transition:.2s;
+        }
+        .report-filter-btn:hover {
+            border-color:#075bd7;
+            color:#075bd7;
+        }
+        .report-filter-btn.active {
+            background:#075bd7;
+            color:#fff;
+            border-color:#075bd7;
+        }
+        .filter-empty {
+            display:none;
+            text-align:center;
+            padding:40px 15px;
+            color:#69738a;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                <b>
+                    Cyber Awareness<br>
+                    in Rural Areas
+                </b>
+
+                <small>
+                    Campaign for Rural Development
+                </small>
+            </div>
+
+        </div>
+
+        <nav class="nav">
+
+            <a href="{{ url_for('dashboard') }}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('learning') }}">
+                <i class="fa-solid fa-book-open"></i>
+                Learn Cyber Safety
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Report Cyber Scam
+            </a>
+
+            <a href="{{ url_for('feedback') }}">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Feedback & Survey
+            </a>
+
+            <a href="{{ url_for('helpline') }}">
+                <i class="fa-solid fa-phone"></i>
+                Emergency & Helpline
+            </a>
+
+            <a href="{{ url_for('government') }}">
+                <i class="fa-solid fa-landmark"></i>
+                Government Resources
+            </a>
+
+            <a href="{{ url_for('events') }}">
+                <i class="fa-solid fa-calendar-days"></i>
+                Upcoming Events
+            </a>
+
+            <a class="active"
+               href="{{ url_for('admin_dashboard') }}">
+                <i class="fa-solid fa-user-shield"></i>
+                Admin Dashboard
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+
+        </nav>
+
+        <div class="rural-art"></div>
+
+        <div class="side-bottom">
+            🛡️ Stay Safe Online,<br>
+            Stay Secure!
+            <br><br>
+            © 2025 Cyber Awareness Campaign<br>
+            for Rural Development
+        </div>
+
+    </aside>
+
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <i class="fa-solid fa-bars hamb" data-menu></i>
+
+            <span class="top-title">
+                Manage Reports
+            </span>
+
+        </div>
+
+        <div class="top-right">
+
+            <span class="bell">
+                <i class="fa-regular fa-bell"></i>
+                <b class="badge">{{ reports|length }}</b>
+            </span>
+
+            <div class="userbox">
+
+                <span class="avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </span>
+
+                <span>
+                    Hello,<br>
+                    <b>{{ current_user|capitalize }}</b>
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <div class="container">
+
+            <!-- PAGE HEADER -->
+            <div class="page-head">
+
+                <div>
+
+                    <h1>
+                        Manage Cyber Scam Reports
+                    </h1>
+
+                    <p>
+                        Review, monitor and manage cyber scam reports
+                        submitted by citizens.
+                    </p>
+
+                </div>
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="btn outline">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Admin Dashboard
+
+                </a>
+
+            </div>
+
+
+            <!-- REPORT SUMMARY -->
+
+            <div class="cards">
+
+                <div class="stat">
+
+                    <div class="iconbox">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+
+                    <div>
+
+                        <h4>Total Reports</h4>
+
+                        <strong>
+                            {{ reports|length }}
+                        </strong>
+
+                        <small>
+                            Submitted reports
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#fff5df;color:#e99d00;">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Pending</h4>
+
+                        <strong>
+                            {{ reports|selectattr('status', 'equalto', 'Pending')|list|length }}
+                        </strong>
+
+                        <small>
+                            Awaiting review
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#eaf2ff;color:#075bd7;">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Under Review</h4>
+
+                        <strong>
+                            {{ reports|selectattr('status', 'equalto', 'Under Review')|list|length }}
+                        </strong>
+
+                        <small>
+                            Being investigated
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#eaf8ef;color:#159653;">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Resolved</h4>
+
+                        <strong>
+                            {{ reports|selectattr('status', 'equalto', 'Resolved')|list|length }}
+                        </strong>
+
+                        <small>
+                            Successfully resolved
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- REPORT TABLE -->
+
+            <section class="panel">
+
+                <div class="panel-title">
+
+                    <h3>
+                        <i class="fa-solid fa-triangle-exclamation"
+                           style="color:#075bd7;"></i>
+
+                        All Cyber Scam Reports
+                    </h3>
+
+                    <span class="pill">
+                        {{ reports|length }} Reports
+                    </span>
+
+                </div>
+
+
+                <!-- REPORT FILTERS -->
+                <div class="report-filters">
+
+                    <button type="button"
+                            class="report-filter-btn active"
+                            onclick="filterReports('all', this)">
+                        All Reports ({{ reports|length }})
+                    </button>
+
+                    <button type="button"
+                            class="report-filter-btn"
+                            onclick="filterReports('pending', this)">
+                        Pending ({{ reports|selectattr('status', 'equalto', 'Pending')|list|length }})
+                    </button>
+
+                    <button type="button"
+                            class="report-filter-btn"
+                            onclick="filterReports('under-review', this)">
+                        Under Review ({{ reports|selectattr('status', 'equalto', 'Under Review')|list|length }})
+                    </button>
+
+                    <button type="button"
+                            class="report-filter-btn"
+                            onclick="filterReports('resolved', this)">
+                        Resolved ({{ reports|selectattr('status', 'equalto', 'Resolved')|list|length }})
+                    </button>
+
+                </div>
+
+
+                <div style="overflow-x:auto;">
+
+                    <table class="report-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Scam Type</th>
+                                <th>Incident Date</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for r in reports %}
+
+                            <tr class="report-row" data-status="{{ r.status|lower|replace(' ', '-') }}">
+
+                                <td>
+                                    <strong>
+                                        #{{ r.id }}
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    {{ r.username or "Guest" }}
+                                </td>
+
+
+                                <td>
+                                    {{ r.scam_type or "Not specified" }}
+                                </td>
+
+
+                                <td>
+                                    {{ r.incident_date or "—" }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if r.status == "Resolved" %}
+
+                                        <span class="pill green">
+                                            <i class="fa-solid fa-check"></i>
+                                            Resolved
+                                        </span>
+
+                                    {% elif r.status == "Under Review" %}
+
+                                        <span class="pill"
+                                              style="background:#eaf2ff;color:#075bd7;">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                            Under Review
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="pill">
+                                            <i class="fa-solid fa-clock"></i>
+                                            Pending
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+                                    {{ r.created_at[:10] if r.created_at else "—" }}
+                                </td>
+
+
+                                <td>
+
+                                    <a href="{{ url_for('admin_report_details', report_id=r.id) }}"
+                                       class="btn outline">
+
+                                        <i class="fa-solid fa-eye"></i>
+                                        View
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="7"
+                                    style="text-align:center;padding:50px;">
+
+                                    <i class="fa-solid fa-folder-open"
+                                       style="font-size:45px;color:#075bd7;">
+                                    </i>
+
+                                    <h3>
+                                        No Reports Found
+                                    </h3>
+
+                                    <p>
+                                        Submitted cyber scam reports
+                                        will appear here.
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        {% if reports %}
+                        <tr id="filterEmptyRow">
+                            <td colspan="7" class="filter-empty">
+                                <i class="fa-solid fa-filter" style="font-size:28px;color:#075bd7;margin-bottom:10px;"></i>
+                                <div>No reports found for this filter.</div>
+                            </td>
+                        </tr>
+                        {% endif %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- INFORMATION -->
+
+            <section class="notice"
+                     style="margin-top:18px;">
+
+                <h3>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Admin Report Management
+                </h3>
+
+                <p>
+                    Administrators can open any report to review the
+                    incident details and evidence. Pending reports are
+                    automatically moved to <strong>Under Review</strong>
+                    when opened.
+                </p>
+
+            </section>
+
+
+            <!-- FOOTER -->
+
+            <div class="footer">
+
+                <span>
+                    © 2025 Cyber Awareness Campaign for Rural Development
+                    | All Rights Reserved
+                </span>
+
+                <span>
+                    About Us | Privacy Policy | Terms & Conditions | Contact Us
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+
+<script>
+function filterReports(status, button) {
+    const rows = document.querySelectorAll('.report-row');
+    const buttons = document.querySelectorAll('.report-filter-btn');
+    const emptyRow = document.getElementById('filterEmptyRow');
+
+    buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+    button.classList.add('active');
+
+    let visible = 0;
+
+    rows.forEach(function(row) {
+        const rowStatus = row.getAttribute('data-status');
+        const show = status === 'all' || rowStatus === status;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+    });
+
+    if (emptyRow) {
+        emptyRow.style.display = visible === 0 ? 'table-row' : 'none';
+    }
+}
+</script>
+
+</body>
+
+</html>

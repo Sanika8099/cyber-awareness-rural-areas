@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Government Resources</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+.additional {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.add-card {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:18px;
+    border:1px solid #e1e7f0;
+    border-radius:12px;
+    background:#fff;
+    color:#071c45;
+    text-decoration:none;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.add-card:hover {
+    transform:translateY(-3px);
+    border-color:#075bd7;
+    box-shadow:0 8px 20px rgba(7,91,215,.12);
+    color:#075bd7;
+}
+
+.add-icon {
+    font-size:25px;
+}
+
+.add-card span:last-child {
+    font-size:14px;
+    font-weight:600;
+}
+
+.quick-link {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    text-decoration:none;
+    color:inherit;
+    width:100%;
+}
+
+.quick-link:hover {
+    color:#075bd7;
+}
+
+
+/* ===============================
+   NEW CYBER LOGO
+================================ */
+
+.cyber-logo {
+    width:52px;
+    height:52px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#075bd7,#0b2d55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    box-shadow:0 5px 15px rgba(7,91,215,.25);
+}
+
+.cyber-logo i {
+    color:white;
+    font-size:28px;
+}
+
+.cyber-logo::after {
+    content:"";
+    position:absolute;
+    width:8px;
+    height:8px;
+    background:#53d769;
+    border-radius:50%;
+    right:7px;
+    top:7px;
+    border:2px solid white;
+}
+
+
+/* Mobile */
+
+@media(max-width:900px) {
+
+    .additional {
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .additional {
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+
+    <!-- NEW LOGO -->
+
+    <div class="brand">
+
+        <div class="cyber-logo">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
+
+
+        <div>
+
+            <b>
+                Cyber Awareness<br>
+                in Rural Areas
+            </b>
+
+            <small>
+                Campaign for Rural Development
+            </small>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="nav">
+
+
+        <a href="{{ url_for('dashboard') }}">
+
+            <i class="fa-solid fa-house"></i>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="{{ url_for('learning') }}">
+
+            <i class="fa-solid fa-book-open"></i>
+
+            Learn Cyber Safety
+
+        </a>
+
+
+        <a href="{{ url_for('report') }}">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            Report Cyber Scam
+
+        </a>
+
+
+        <a href="{{ url_for('feedback') }}">
+
+            <i class="fa-solid fa-pen-to-square"></i>
+
+            Feedback & Survey
+
+        </a>
+
+
+        <a href="{{ url_for('helpline') }}">
+
+            <i class="fa-solid fa-phone"></i>
+
+            Emergency & Helpline
+
+        </a>
+
+
+        <a class="active"
+           href="{{ url_for('government') }}">
+
+            <i class="fa-solid fa-landmark"></i>
+
+            Government Resources
+
+        </a>
+
+
+        <a href="{{ url_for('events') }}">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+            Upcoming Events
+
+        </a>
+
+
+        {% if role == "admin" %}
+
+        <a href="{{ url_for('admin_dashboard') }}">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            Admin Dashboard
+
+        </a>
+
+        {% endif %}
+
+
+        <a href="{{ url_for('logout') }}">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+
+    </nav>
+
+
+    <div class="rural-art"></div>
+
+
+    <div class="side-bottom">
+
+        🛡️ Stay Safe Online,<br>
+        Stay Secure!
+
+        <br><br>
+
+        © 2025 Cyber Awareness Campaign<br>
+        for Rural Development
+
+    </div>
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<header class="topbar">
+
+
+    <div class="top-left">
+
+        <i class="fa-solid fa-bars hamb"
+           data-menu></i>
+
+        <span class="top-title">
+
+            Government Resources
+
+        </span>
+
+    </div>
+
+
+    <div class="top-right">
+
+
+        <span class="bell">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <b class="badge">3</b>
+
+        </span>
+
+
+        <div class="userbox">
+
+            <span class="avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </span>
+
+
+            <span>
+
+                Hello,<br>
+
+                <b>
+                    {{ current_user|capitalize }}
+                </b>
+
+            </span>
+
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </div>
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main">
+
+<div class="container">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-head">
+
+        <div>
+
+            <h1>
+                Government Resources
+            </h1>
+
+            <p>
+                Access official government portals and
+                resources for cyber safety and support.
+            </p>
+
+        </div>
+
+
+        <div style="font-size:55px">
+
+            🏛️ 🇮🇳 🛡️
+
+        </div>
+
+    </div>
+
+
+
+    <!-- OFFICIAL PORTALS + QUICK LINKS -->
+
+    <div class="grid2">
+
+
+        <!-- OFFICIAL PORTALS -->
+
+        <section class="panel">
+
+            <h3>
+                Official Portals
+            </h3>
+
+
+            <div class="resource">
+
+                <div class="resource-logo">
+                    🏛️
+                </div>
+
+                <div class="resource-info">
+
+                    <h4>
+                        Cyber Crime Reporting Portal
+                    </h4>
+
+                    <p>
+                        Report cyber crime incidents online.
+                    </p>
+
+                </div>
+
+                <a class="btn"
+                   href="https://cybercrime.gov.in/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Visit Portal ↗
+
+                </a>
+
+            </div>
+
+
+
+            <div class="resource">
+
+                <div class="resource-logo">
+                    🌐
+                </div>
+
+                <div class="resource-info">
+
+                    <h4>
+                        Digital India
+                    </h4>
+
+                    <p>
+                        Information about Digital India initiatives.
+                    </p>
+
+                </div>
+
+                <a class="btn"
+                   href="https://www.digitalindia.gov.in/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Visit Portal ↗
+
+                </a>
+
+            </div>
+
+
+
+            <div class="resource">
+
+                <div class="resource-logo">
+                    CERT
+                </div>
+
+                <div class="resource-info">
+
+                    <h4>
+                        CERT-In (Cyber Security)
+                    </h4>
+
+                    <p>
+                        Indian Computer Emergency Response Team.
+                    </p>
+
+                </div>
+
+                <a class="btn"
+                   href="https://www.cert-in.org.in/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Visit Portal ↗
+
+                </a>
+
+            </div>
+
+
+
+            <div class="resource">
+
+                <div class="resource-logo">
+                    🔐
+                </div>
+
+                <div class="resource-info">
+
+                    <h4>
+                        Stay Safe Online
+                    </h4>
+
+                    <p>
+                        Tips and resources for safe internet usage.
+                    </p>
+
+                </div>
+
+                <a class="btn"
+                   href="https://www.staysafeonline.in/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Visit Portal ↗
+
+                </a>
+
+            </div>
+
+
+
+            <div class="resource">
+
+                <div class="resource-logo">
+                    🏛️
+                </div>
+
+                <div class="resource-info">
+
+                    <h4>
+                        MeitY
+                    </h4>
+
+                    <p>
+                        Ministry of Electronics & Information Technology.
+                    </p>
+
+                </div>
+
+                <a class="btn"
+                   href="https://www.meity.gov.in/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Visit Portal ↗
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- QUICK LINKS -->
+
+        <section class="side-stack">
+
+            <section class="panel">
+
+                <h3>
+                    Quick Links
+                </h3>
+
+
+                <ul class="checklist">
+
+
+                    <li>
+
+                        <a class="quick-link"
+                           href="tel:1930">
+
+                            <span>
+                                ☎ National Cyber Crime Helpline (1930)
+                            </span>
+
+                            <span>›</span>
+
+                        </a>
+
+                    </li>
+
+
+                    <li>
+
+                        <a class="quick-link"
+                           href="https://www.youtube.com/results?search_query=cyber+awareness+india"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            <span>
+                                ▶ Cyber Awareness Posters & Videos
+                            </span>
+
+                            <span>›</span>
+
+                        </a>
+
+                    </li>
+
+
+                    <li>
+
+                        <a class="quick-link"
+                           href="https://www.cert-in.org.in/"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            <span>
+                                🛡 Cyber Safety Do's & Don'ts
+                            </span>
+
+                            <span>›</span>
+
+                        </a>
+
+                    </li>
+
+
+                    <li>
+
+                        <a class="quick-link"
+                           href="https://www.digitalindia.gov.in/"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            <span>
+                                🎓 Educational Resources
+                            </span>
+
+                            <span>›</span>
+
+                        </a>
+
+                    </li>
+
+
+                    <li>
+
+                        <a class="quick-link"
+                           href="https://www.cybercrime.gov.in/"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            <span>
+                                👥 Online Safety for Rural Citizens
+                            </span>
+
+                            <span>›</span>
+
+                        </a>
+
+                    </li>
+
+
+                    <li>
+
+                        <a class="quick-link"
+                           href="https://cybercrime.gov.in/"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            <span>
+                                📄 Lodge a Complaint
+                            </span>
+
+                            <span>›</span>
+
+                        </a>
+
+                    </li>
+
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- SAFETY TIP -->
+
+            <section class="notice">
+
+                <h3>
+                    🛡️ Cyber Safety Tip
+                </h3>
+
+                <p>
+                    Always use strong passwords and enable
+                    two-factor authentication to protect
+                    your accounts.
+                </p>
+
+            </section>
+
+
+        </section>
+
+    </div>
+
+
+
+    <!-- ADDITIONAL RESOURCES -->
+
+    <section class="panel"
+             style="margin-top:18px">
+
+        <h3>
+            Additional Resources
+        </h3>
+
+
+        <div class="additional">
+
+
+            <a class="add-card"
+               href="https://www.meity.gov.in/"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <span class="add-icon">
+                    📄
+                </span>
+
+                <span>
+                    Government Policies
+                </span>
+
+                <span>›</span>
+
+            </a>
+
+
+
+            <a class="add-card"
+               href="https://www.mygov.in/"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <span class="add-icon">
+                    📣
+                </span>
+
+                <span>
+                    Awareness Campaigns
+                </span>
+
+                <span>›</span>
+
+            </a>
+
+
+
+            <a class="add-card"
+               href="https://www.cert-in.org.in/"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <span class="add-icon">
+                    🎓
+                </span>
+
+                <span>
+                    Training & Workshops
+                </span>
+
+                <span>›</span>
+
+            </a>
+
+
+
+            <a class="add-card"
+               href="https://cybercrime.gov.in/"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <span class="add-icon">
+                    🎧
+                </span>
+
+                <span>
+                    Support Centers
+                </span>
+
+                <span>›</span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        <span>
+            © 2025 Cyber Awareness Campaign
+            for Rural Development |
+            All Rights Reserved
+        </span>
+
+        <span>
+            About Us |
+            Privacy Policy |
+            Terms & Conditions |
+            Contact Us
+        </span>
+
+    </div>
+
+
+</div>
+
+</main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

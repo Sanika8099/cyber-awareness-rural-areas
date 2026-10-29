@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Cyber Awareness</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        .admin-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            border: 0;
+            border-radius: 6px;
+            padding: 8px 11px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .report-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 14px 0 16px;
+        }
+
+        .filter-btn {
+            border: 1px solid var(--border);
+            background: #fff;
+            color: #50627d;
+            border-radius: 8px;
+            padding: 8px 13px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .filter-btn:hover {
+            border-color: #075bd7;
+            color: #075bd7;
+        }
+
+        .filter-btn.active {
+            background: #075bd7;
+            border-color: #075bd7;
+            color: #fff;
+        }
+
+        .filter-empty {
+            display: none;
+            text-align: center;
+            padding: 30px 10px;
+            color: #69738a;
+        }
+
+        .view-btn {
+            background: #eaf2ff;
+            color: #075bd7;
+        }
+
+        .review-btn {
+            background: #fff5df;
+            color: #b36a00;
+        }
+
+        .resolve-btn {
+            background: #e4f8ed;
+            color: #18824a;
+        }
+
+        .delete-btn {
+            background: #fff0f0;
+            color: #d92732;
+        }
+
+        .admin-actions form {
+            margin: 0;
+        }
+
+        .status-pending {
+            background: #fff2d4;
+            color: #b36a00;
+        }
+
+        .status-review {
+            background: #e9f2ff;
+            color: #075bd7;
+        }
+
+        .status-resolved {
+            background: #e4f8ed;
+            color: #18824a;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px 10px;
+            color: #69738a;
+        }
+
+        .empty-state i {
+            font-size: 42px;
+            margin-bottom: 12px;
+            color: #9aa7bd;
+        }
+
+        .quick-admin {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .admin-card {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #fff;
+            transition: .2s;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(20, 55, 110, .08);
+        }
+
+        .admin-card .iconbox {
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
+        }
+
+        .admin-card h4 {
+            margin: 0 0 4px;
+        }
+
+        .admin-card p {
+            margin: 0;
+            color: #69738a;
+            font-size: 12px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 13px 0;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .activity-item:last-child {
+            border-bottom: 0;
+        }
+
+        .activity-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #edf4ff;
+            color: #075bd7;
+            display: grid;
+            place-items: center;
+            flex: none;
+        }
+
+        .activity-item strong {
+            font-size: 13px;
+            display: block;
+        }
+
+        .activity-item small {
+            color: #69738a;
+        }
+
+        @media(max-width:900px) {
+            .quick-admin {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .report-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media(max-width:600px) {
+            .quick-admin {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="app">
+
+
+        <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                    <b>
+                        Cyber Awareness<br>
+                        in Rural Areas
+                    </b>
+
+                    <small>
+                        Campaign for Rural Development
+                    </small>
+                </div>
+
+            </div>
+
+
+            <nav class="nav">
+
+                <a href="{{ url_for('dashboard') }}">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('learning') }}">
+                    <i class="fa-solid fa-book-open"></i>
+                    Learn Cyber Safety
+                </a>
+
+                <a href="{{ url_for('report') }}">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Report Cyber Scam
+                </a>
+
+                <a href="{{ url_for('feedback') }}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Feedback & Survey
+                </a>
+
+                <a href="{{ url_for('helpline') }}">
+                    <i class="fa-solid fa-phone"></i>
+                    Emergency & Helpline
+                </a>
+
+                <a href="{{ url_for('government') }}">
+                    <i class="fa-solid fa-landmark"></i>
+                    Government Resources
+                </a>
+
+                <a href="{{ url_for('events') }}">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Upcoming Events
+                </a>
+
+                <a class="active" href="{{ url_for('admin_dashboard') }}">
+                    <i class="fa-solid fa-user-shield"></i>
+                    Admin Dashboard
+                </a>
+
+                <a href="{{ url_for('logout') }}">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+
+            </nav>
+
+
+            <div class="rural-art"></div>
+
+
+            <div class="side-bottom">
+
+                🛡️ Stay Safe Online,<br>
+                Stay Secure!
+
+                <br><br>
+
+                © 2025 Cyber Awareness Campaign<br>
+                for Rural Development
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+        <header class="topbar">
+
+            <div class="top-left">
+
+                <i class="fa-solid fa-bars hamb" data-menu></i>
+
+                <span class="top-title">
+                    Admin Dashboard
+                </span>
+
+            </div>
+
+
+            <div class="top-right">
+
+                <span class="bell">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <b class="badge">
+                        {{ pending }}
+                    </b>
+
+                </span>
+
+
+                <div class="userbox">
+
+                    <span class="avatar">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
+
+                    <span>
+                        Hello,<br>
+                        <b>{{ current_user|capitalize }}</b>
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+        <main class="main">
+
+            <div class="container">
+
+
+                <!-- PAGE HEADER -->
+
+                <div class="page-head">
+
+                    <div>
+
+                        <h1>
+                            Admin Dashboard
+                        </h1>
+
+                        <p>
+                            Manage users, reports and monitor campaign activities.
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <span class="pill green">
+                            <i class="fa-solid fa-circle"></i>
+                            System Online
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+                <div class="cards">
+
+
+                    <!-- USERS -->
+
+                    <div class="stat">
+
+                        <div class="iconbox">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <div>
+
+                            <h4>Total Users</h4>
+
+                            <strong>
+                                {{ total_users }}
+                            </strong>
+
+                            <small>
+                                Registered users
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- REPORTS -->
+
+                    <div class="stat">
+
+                        <div class="iconbox" style="background:#eaf8ef;color:#159653;">
+
+                            <i class="fa-solid fa-file-shield"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h4>Total Reports</h4>
+
+                            <strong>
+                                {{ total_reports }}
+                            </strong>
+
+                            <small>
+                                All submitted reports
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PENDING -->
+
+                    <div class="stat">
+
+                        <div class="iconbox" style="background:#fff5df;color:#e99d00;">
+
+                            <i class="fa-solid fa-hourglass-half"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h4>Pending Reports</h4>
+
+                            <strong>
+                                {{ pending }}
+                            </strong>
+
+                            <small>
+                                Require attention
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RESOLVED -->
+
+                    <div class="stat">
+
+                        <div class="iconbox" style="background:#f0eaff;color:#7034d4;">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h4>Resolved Reports</h4>
+
+                            <strong>
+                                {{ resolved }}
+                            </strong>
+
+                            <small>
+                                Successfully resolved
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                 RECENT REPORTS
+            ================================================== -->
+
+                <section class="panel">
+
+                    <div class="panel-title">
+
+                        <h3>
+                            <i class="fa-solid fa-file-circle-exclamation" style="color:#075bd7;"></i>
+
+                            Recent Cyber Scam Reports
+                        </h3>
+
+                        <a href="{{ url_for('admin_reports') }}">
+                            View All
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+
+                    <div class="report-filters">
+
+                        <button type="button" class="filter-btn active" onclick="filterReports('all', this)">
+                            All Reports ({{ total_reports }})
+                        </button>
+
+                        <button type="button" class="filter-btn" onclick="filterReports('Pending', this)">
+                            Pending ({{ pending }})
+                        </button>
+
+                        <button type="button" class="filter-btn" onclick="filterReports('Under Review', this)">
+                            Under Review ({{ under_review }})
+                        </button>
+
+                        <button type="button" class="filter-btn" onclick="filterReports('Resolved', this)">
+                            Resolved ({{ resolved }})
+                        </button>
+
+                    </div>
+
+
+                    <div style="overflow-x:auto;">
+
+                        <table class="report-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>ID</th>
+
+                                    <th>User</th>
+
+                                    <th>Scam Type</th>
+
+                                    <th>Incident Date</th>
+
+                                    <th>Status</th>
+
+                                    <th>Submitted</th>
+
+                                    <th>Action</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for r in reports %}
+
+                                <tr class="report-row" data-status="{{ r.status or 'Pending' }}">
+
+                                    <td>
+                                        <strong>#{{ r.id }}</strong>
+                                    </td>
+
+
+                                    <td>
+                                        {{ r.username }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ r.scam_type or "Not specified" }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ r.incident_date or "—" }}
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if r.status == "Resolved" %}
+
+                                        <span class="pill status-resolved">
+                                            <i class="fa-solid fa-check"></i>
+                                            Resolved
+                                        </span>
+
+                                        {% elif r.status == "Under Review" %}
+
+                                        <span class="pill status-review">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                            Under Review
+                                        </span>
+
+                                        {% else %}
+
+                                        <span class="pill status-pending">
+                                            <i class="fa-solid fa-clock"></i>
+                                            Pending
+                                        </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+                                        {{ r.created_at[:10] if r.created_at else "—" }}
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="admin-actions">
+
+
+                                            <!-- VIEW -->
+
+                                            <a href="{{ url_for('admin_report_details', report_id=r.id) }}"
+                                                class="action-btn view-btn">
+
+                                                <i class="fa-solid fa-eye"></i>
+                                                View
+
+                                            </a>
+
+
+                                            <!-- RESOLVE -->
+
+                                            {% if r.status != "Resolved" %}
+
+                                            <form method="POST"
+                                                action="{{ url_for('update_report_status', report_id=r.id) }}">
+
+                                                <input type="hidden" name="status" value="Resolved">
+
+                                                <button type="submit" class="action-btn resolve-btn"
+                                                    onclick="return confirm('Mark this report as resolved?');">
+
+                                                    <i class="fa-solid fa-check"></i>
+                                                    Resolve
+
+                                                </button>
+
+                                            </form>
+
+                                            {% endif %}
+
+
+                                            <!-- DELETE -->
+
+                                            <form method="POST" action="{{ url_for('delete_report', report_id=r.id) }}">
+
+                                                <button type="submit" class="action-btn delete-btn"
+                                                    onclick="return confirm('Are you sure you want to delete this report? This cannot be undone.');">
+
+                                                    <i class="fa-solid fa-trash"></i>
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                                {% else %}
+
+                                <tr>
+
+                                    <td colspan="7">
+
+                                        <div class="empty-state">
+
+                                            <i class="fa-solid fa-folder-open"></i>
+
+                                            <h3>
+                                                No Reports Yet
+                                            </h3>
+
+                                            <p>
+                                                Submitted cyber scam reports will appear here.
+                                            </p>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+                                {% if reports %}
+                                <tr id="filter-empty">
+                                    <td colspan="7" class="filter-empty">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                        <div style="margin-top:8px;">No reports found for this filter.</div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 QUICK ADMIN ACTIONS
+            ================================================== -->
+
+                <section class="panel" style="margin-top:18px;">
+
+                    <h3>
+                        <i class="fa-solid fa-bolt" style="color:#075bd7;"></i>
+
+                        Quick Admin Actions
+                    </h3>
+
+
+                    <div class="quick-admin">
+
+
+                        <a href="{{ url_for('admin_reports') }}" class="admin-card">
+
+                            <div class="iconbox">
+
+                                <i class="fa-solid fa-file-circle-exclamation"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Manage Reports
+                                </h4>
+
+                                <p>
+                                    Review and resolve reports
+                                </p>
+
+                            </div>
+
+                        </a>
+
+
+                        <a href="{{ url_for('admin_users') }}" class="admin-card">
+
+                            <div class="iconbox" style="background:#eaf8ef;color:#159653;">
+
+                                <i class="fa-solid fa-users"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Manage Users
+                                </h4>
+
+                                <p>
+                                    View registered users
+                                </p>
+
+                            </div>
+
+                        </a>
+
+
+                        <a href="{{ url_for('admin_feedback') }}" class="admin-card">
+
+                            <div class="iconbox" style="background:#fff5df;color:#e99d00;">
+
+                                <i class="fa-solid fa-comments"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Feedback
+                                </h4>
+
+                                <p>
+                                    Review user feedback
+                                </p>
+
+                            </div>
+
+                        </a>
+
+
+                        <a href="{{ url_for('events') }}" class="admin-card">
+
+                            <div class="iconbox" style="background:#f0eaff;color:#7034d4;">
+
+                                <i class="fa-solid fa-calendar-days"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Events
+                                </h4>
+
+                                <p>
+                                    View campaign events
+                                </p>
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                 BOTTOM INFORMATION
+            ================================================== -->
+
+                <div class="grid-main" style="margin-top:18px;">
+
+
+                    <!-- ACTIVITIES -->
+
+                    <section class="panel">
+
+                        <h3>
+                            <i class="fa-solid fa-clock-rotate-left" style="color:#075bd7;"></i>
+
+                            Admin Overview
+                        </h3>
+
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    User Management
+                                </strong>
+
+                                <small>
+                                    {{ total_users }} registered users in the system
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Report Monitoring
+                                </strong>
+
+                                <small>
+                                    {{ total_reports }} total reports submitted
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Pending Attention
+                                </strong>
+
+                                <small>
+                                    {{ pending }} report(s) currently pending
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Resolution Progress
+                                </strong>
+
+                                <small>
+                                    {{ resolved }} report(s) resolved successfully
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- SYSTEM STATUS -->
+
+                    <section class="panel">
+
+                        <h3>
+                            <i class="fa-solid fa-server" style="color:#075bd7;"></i>
+
+                            System Status
+                        </h3>
+
+
+                        <p>
+                            Website
+
+                            <span class="pill green" style="float:right;">
+
+                                <i class="fa-solid fa-circle" style="font-size:7px;"></i>
+
+                                Online
+
+                            </span>
+
+                        </p>
+
+
+                        <p>
+                            Database
+
+                            <span class="pill green" style="float:right;">
+
+                                <i class="fa-solid fa-circle" style="font-size:7px;"></i>
+
+                                Connected
+
+                            </span>
+
+                        </p>
+
+
+                        <p>
+                            Reports System
+
+                            <span class="pill green" style="float:right;">
+
+                                <i class="fa-solid fa-circle" style="font-size:7px;"></i>
+
+                                Active
+
+                            </span>
+
+                        </p>
+
+
+                        <p>
+                            Admin Security
+
+                            <span class="pill green" style="float:right;">
+
+                                <i class="fa-solid fa-shield-halved"></i>
+
+                                Protected
+
+                            </span>
+
+                        </p>
+
+
+                        <div class="notice" style="margin-top:18px;">
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            All report status changes are stored in the
+                            project database.
+
+                        </div>
+
+                    </section>
+
+
+                </div>
+
+
+
+                <!-- FOOTER -->
+
+                <div class="footer">
+
+                    <span>
+                        © 2025 Cyber Awareness Campaign for Rural Development
+                        | All Rights Reserved
+                    </span>
+
+                    <span>
+                        About Us | Privacy Policy | Terms & Conditions | Contact Us
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+        function filterReports(status, button) {
+            const rows = document.querySelectorAll('.report-row');
+            const buttons = document.querySelectorAll('.filter-btn');
+            const empty = document.getElementById('filter-empty');
+
+            buttons.forEach(function (btn) {
+                btn.classList.remove('active');
+            });
+
+            button.classList.add('active');
+
+            let visible = 0;
+
+            rows.forEach(function (row) {
+                const rowStatus = row.getAttribute('data-status');
+
+                if (status === 'all' || rowStatus === status) {
+                    row.style.display = '';
+                    visible++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (empty) {
+                empty.style.display = visible === 0 ? 'table-row' : 'none';
+            }
+        }
+
+    </script>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

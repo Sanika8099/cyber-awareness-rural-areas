@@ -1,0 +1,912 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+```
+<title>Cyber Awareness Learning</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+```
+
+</head>
+
+<body>
+
+<div class="app">
+
+```
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+            <b>
+                Cyber Awareness<br>
+                in Rural Areas
+            </b>
+
+            <small>
+                Campaign for Rural Development
+            </small>
+        </div>
+
+    </div>
+
+    <nav class="nav">
+
+        <a href="{{ url_for('dashboard') }}">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a class="active" href="{{ url_for('learning') }}">
+            <i class="fa-solid fa-book-open"></i>
+            Learn Cyber Safety
+        </a>
+
+        <a href="{{ url_for('report') }}">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Report Cyber Scam
+        </a>
+
+        <a href="{{ url_for('feedback') }}">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Feedback & Survey
+        </a>
+
+        <a href="{{ url_for('helpline') }}">
+            <i class="fa-solid fa-phone"></i>
+            Emergency & Helpline
+        </a>
+
+        <a href="{{ url_for('government') }}">
+            <i class="fa-solid fa-landmark"></i>
+            Government Resources
+        </a>
+
+        <a href="{{ url_for('events') }}">
+            <i class="fa-solid fa-calendar-days"></i>
+            Upcoming Events
+        </a>
+
+        {% if role == 'admin' %}
+        <a href="{{ url_for('admin_dashboard') }}">
+            <i class="fa-solid fa-shield-halved"></i>
+            Admin Dashboard
+        </a>
+        {% endif %}
+
+        <a href="{{ url_for('logout') }}">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </nav>
+
+    <div class="rural-art"></div>
+
+    <div class="side-bottom">
+        🛡️ Stay Safe Online,<br>
+        Stay Secure!
+
+        <br><br>
+
+        © 2026 Cyber Awareness Campaign<br>
+        for Rural Development
+    </div>
+
+</aside>
+
+
+<!-- ================= TOPBAR ================= -->
+
+<header class="topbar">
+
+    <div class="top-left">
+
+        <i class="fa-solid fa-bars hamb" data-menu></i>
+
+        <span class="top-title">
+            Cyber Awareness Learning
+        </span>
+
+    </div>
+
+    <div class="top-right">
+
+        <span class="bell">
+            <i class="fa-regular fa-bell"></i>
+            <b class="badge">3</b>
+        </span>
+
+        <div class="userbox">
+
+            <span class="avatar">
+                <i class="fa-solid fa-user"></i>
+            </span>
+
+            <span>
+                Hello,<br>
+                <b>{{ current_user|capitalize }}</b>
+            </span>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <div class="container">
+
+
+        <!-- ================= HERO ================= -->
+
+        <div class="hero">
+
+            <h1>
+                Learn & Stay Safe Online
+            </h1>
+
+            <p>
+                Explore important cyber safety topics and
+                protect yourself in the digital world.
+            </p>
+
+            <div class="hero-art">
+                👩‍💻 👨‍💻 🏡
+            </div>
+
+        </div>
+
+
+        <!-- ================= LESSONS ================= -->
+
+        <div class="learning-grid" style="margin-top:18px">
+
+
+            <!-- LESSON 1 -->
+
+            <article class="lesson">
+
+                <div class="iconbox"
+                     style="color:#1a8c51">
+                    🔐
+                </div>
+
+                <h3 style="color:#1a8c51">
+                    1. Password Safety
+                </h3>
+
+                <p>
+                    Learn how to create strong passwords
+                    and keep your accounts safe.
+                </p>
+
+                <button class="btn outline"
+                        onclick="openLesson(1)">
+                    Start Learning →
+                </button>
+
+            </article>
+
+
+            <!-- LESSON 2 -->
+
+            <article class="lesson">
+
+                <div class="iconbox"
+                     style="color:#54319b">
+                    🎣
+                </div>
+
+                <h3 style="color:#54319b">
+                    2. Phishing Awareness
+                </h3>
+
+                <p>
+                    Identify fake emails, links, and websites
+                    to avoid phishing attacks.
+                </p>
+
+                <button class="btn outline"
+                        onclick="openLesson(2)">
+                    Start Learning →
+                </button>
+
+            </article>
+
+
+            <!-- LESSON 3 -->
+
+            <article class="lesson">
+
+                <div class="iconbox"
+                     style="color:#c17b0b">
+                    📱
+                </div>
+
+                <h3 style="color:#c17b0b">
+                    3. OTP & Banking Fraud Prevention
+                </h3>
+
+                <p>
+                    Protect your OTP, bank details and learn
+                    how to avoid banking fraud.
+                </p>
+
+                <button class="btn outline"
+                        onclick="openLesson(3)">
+                    Start Learning →
+                </button>
+
+            </article>
+
+
+            <!-- LESSON 4 -->
+
+            <article class="lesson">
+
+                <div class="iconbox"
+                     style="color:#2a5d9f">
+                    👍
+                </div>
+
+                <h3 style="color:#2a5d9f">
+                    4. Social Media Safety
+                </h3>
+
+                <p>
+                    Stay safe on social media and protect
+                    your personal information.
+                </p>
+
+                <button class="btn outline"
+                        onclick="openLesson(4)">
+                    Start Learning →
+                </button>
+
+            </article>
+
+
+            <!-- LESSON 5 -->
+
+            <article class="lesson">
+
+                <div class="iconbox"
+                     style="color:#18864c">
+                    UPI
+                </div>
+
+                <h3 style="color:#18864c">
+                    5. Safe Digital Payments & UPI
+                </h3>
+
+                <p>
+                    Learn safe UPI practices and secure
+                    digital payment methods.
+                </p>
+
+                <button class="btn outline"
+                        onclick="openLesson(5)">
+                    Start Learning →
+                </button>
+
+            </article>
+
+
+            <!-- LESSON 6 -->
+
+            <article class="lesson">
+
+                <div class="iconbox"
+                     style="color:#a52b2b">
+                    ☠️
+                </div>
+
+                <h3 style="color:#a52b2b">
+                    6. Common Cyber Threats
+                </h3>
+
+                <p>
+                    Understand common online threats and
+                    how to protect yourself.
+                </p>
+
+                <button class="btn outline"
+                        onclick="openLesson(6)">
+                    Start Learning →
+                </button>
+
+            </article>
+
+        </div>
+
+
+        <!-- ================= PROGRESS ================= -->
+
+        <div class="panel" style="margin-top:18px">
+
+            <div class="panel-title">
+
+                <div>
+
+                    <h3>
+                        Learning Progress
+                    </h3>
+
+                    <p style="margin:0;color:#69738a">
+                        Track your learning journey and improve
+                        your cyber awareness.
+                    </p>
+
+                </div>
+
+                <b id="progressText">
+                    50%
+                </b>
+
+            </div>
+
+
+            <div style="
+                display:grid;
+                grid-template-columns:2fr 1fr;
+                gap:20px;
+                align-items:center;
+                margin-top:18px;
+            ">
+
+                <div>
+
+                    <div class="progress">
+
+                        <span id="progressBar"
+                              style="width:50%;">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="cards"
+                     style="
+                     margin:0;
+                     grid-template-columns:repeat(3,1fr);
+                     ">
+
+                    <div class="stat">
+
+                        <div>
+
+                            <strong id="completedCount">
+                                3
+                            </strong>
+
+                            <small>
+                                Lessons Completed
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div>
+
+                            <strong>
+                                2h 15m
+                            </strong>
+
+                            <small>
+                                Time Spent
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div>
+
+                            <strong id="points">
+                                120
+                            </strong>
+
+                            <small>
+                                Points Earned
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= NOTICE ================= -->
+
+        <div class="notice"
+             style="margin-top:16px">
+
+            🛡️ Stay alert, stay safe. Together we can
+            build a cyber-safe rural India.
+
+            <span style="float:right">
+                Need help? Cyber Helpline:
+                <b>1930</b>
+            </span>
+
+        </div>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <div class="footer">
+
+            <span>
+                © 2026 Cyber Awareness Campaign
+                for Rural Development |
+                All Rights Reserved
+            </span>
+
+            <span>
+                About Us |
+                Privacy Policy |
+                Terms & Conditions |
+                Contact Us
+            </span>
+
+        </div>
+
+    </div>
+
+</main>
+```
+
+</div>
+
+<!-- ================= LESSON MODAL ================= -->
+
+<div id="lessonModal"
+     style="
+     display:none;
+     position:fixed;
+     inset:0;
+     background:rgba(0,0,0,0.55);
+     z-index:9999;
+     align-items:center;
+     justify-content:center;
+     padding:20px;
+     ">
+
+```
+<div style="
+    background:white;
+    width:min(650px,95%);
+    max-height:85vh;
+    overflow-y:auto;
+    border-radius:16px;
+    padding:28px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    ">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:15px;
+        ">
+
+        <h2 id="lessonTitle"
+            style="margin:0;color:#071c45">
+        </h2>
+
+        <button onclick="closeLesson()"
+                style="
+                border:none;
+                background:#f1f4f8;
+                width:36px;
+                height:36px;
+                border-radius:50%;
+                font-size:20px;
+                cursor:pointer;
+                ">
+            ×
+        </button>
+
+    </div>
+
+
+    <div id="lessonContent"
+         style="
+         margin-top:18px;
+         line-height:1.7;
+         color:#424b5f;
+         ">
+    </div>
+
+
+    <div style="
+        margin-top:22px;
+        display:flex;
+        justify-content:flex-end;
+        gap:10px;
+        ">
+
+        <button class="btn outline"
+                onclick="closeLesson()">
+            Close
+        </button>
+
+        <button class="btn"
+                onclick="completeLesson()">
+            ✓ Mark as Completed
+        </button>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+const lessons = {
+
+    /* ================= LESSON 1 ================= */
+
+    1: {
+        title: "🔐 Password Safety",
+
+        video: "https://youtube.com/shorts/ENGcqXuUu48?si=ZGsmmkKN-nTx8wFF",
+
+        content: `
+            <h3>How to keep your accounts safe</h3>
+
+            <p>
+                A strong password helps protect your online
+                accounts from unauthorized access.
+            </p>
+
+            <ul>
+                <li>Use a long and unique password for each account.</li>
+                <li>Avoid using your name, birthday or phone number.</li>
+                <li>Never share your password with anyone.</li>
+                <li>Enable two-factor authentication whenever available.</li>
+                <li>Change a password if you think someone else knows it.</li>
+            </ul>
+
+            <div class="notice">
+                💡 Tip: Never use the same password for all your accounts.
+            </div>
+        `
+    },
+
+
+    /* ================= LESSON 2 ================= */
+
+    2: {
+        title: "🎣 Phishing Awareness",
+
+        video: "https://youtube.com/shorts/WhEDe8piwNw?si=qdYmsElumopAonfj",
+
+        content: `
+            <h3>Identify suspicious messages</h3>
+
+            <p>
+                Phishing is a cyber scam where attackers try to
+                trick people into sharing sensitive information.
+            </p>
+
+            <ul>
+                <li>Check the sender before opening a message.</li>
+                <li>Do not click suspicious links.</li>
+                <li>Look carefully at website addresses.</li>
+                <li>Do not share passwords or OTPs through messages.</li>
+                <li>Be careful with urgent messages asking for money.</li>
+            </ul>
+
+            <div class="notice">
+                💡 Tip: When in doubt, contact the organization
+                using its official contact details.
+            </div>
+        `
+    },
+
+
+    /* ================= LESSON 3 ================= */
+
+    3: {
+        title: "📱 OTP & Banking Fraud Prevention",
+
+        video: "https://youtu.be/K3OfKlbraT4?si=Cqhrkg_B1jA0efeD",
+
+        content: `
+            <h3>Protect your banking information</h3>
+
+            <p>
+                Your OTP and banking credentials are private
+                information and should never be shared.
+            </p>
+
+            <ul>
+                <li>Never share an OTP with another person.</li>
+                <li>Never share your PIN or password.</li>
+                <li>Do not install apps because an unknown caller asks you to.</li>
+                <li>Check transaction details before confirming payments.</li>
+                <li>Contact your bank immediately if you notice suspicious activity.</li>
+            </ul>
+
+            <div class="notice">
+                🛡️ Remember: A genuine bank representative
+                should not ask you to reveal your OTP or PIN.
+            </div>
+        `
+    },
+
+
+    /* ================= LESSON 4 ================= */
+
+    4: {
+        title: "👍 Social Media Safety",
+
+        video: "https://youtube.com/shorts/8YCaeSzYT3E?si=gn5hiJNrspkhcegs",
+
+        content: `
+            <h3>Protect your personal information</h3>
+
+            <p>
+                Social media accounts can contain personal
+                information that should be protected.
+            </p>
+
+            <ul>
+                <li>Use privacy settings on your accounts.</li>
+                <li>Accept requests only from people you know.</li>
+                <li>Avoid posting sensitive personal information.</li>
+                <li>Use strong passwords and two-factor authentication.</li>
+                <li>Report suspicious accounts and messages.</li>
+            </ul>
+
+            <div class="notice">
+                💡 Tip: Think before you post or share personal information.
+            </div>
+        `
+    },
+
+
+    /* ================= LESSON 5 ================= */
+
+    5: {
+        title: "UPI – Safe Digital Payments",
+
+        video: "https://youtu.be/K3OfKlbraT4?si=Cqhrkg_B1jA0efeD",
+
+        content: `
+            <h3>Use digital payments safely</h3>
+
+            <p>
+                UPI makes payments convenient, but users should
+                follow basic security practices.
+            </p>
+
+            <ul>
+                <li>Never share your UPI PIN.</li>
+                <li>Remember that a UPI PIN is generally used to authorize payments, not to receive money.</li>
+                <li>Verify the recipient before completing a payment.</li>
+                <li>Do not scan unknown QR codes for receiving money.</li>
+                <li>Use only trusted banking and payment applications.</li>
+            </ul>
+
+            <div class="notice">
+                💡 Tip: Always check the name and amount before
+                confirming a payment.
+            </div>
+        `
+    },
+
+
+    /* ================= LESSON 6 ================= */
+
+    6: {
+        title: "☠️ Common Cyber Threats",
+
+        video: "https://youtube.com/shorts/ENGcqXuUu48?si=ZGsmmkKN-nTx8wFF",
+
+        content: `
+            <h3>Know common online threats</h3>
+
+            <p>
+                Understanding common cyber threats helps people
+                recognize suspicious activity early.
+            </p>
+
+            <ul>
+                <li>Phishing messages and fake websites.</li>
+                <li>Online payment scams.</li>
+                <li>Fake customer-support calls.</li>
+                <li>Malicious links and downloads.</li>
+                <li>Fake job and prize offers.</li>
+                <li>Identity and account-related scams.</li>
+            </ul>
+
+            <div class="notice">
+                🛡️ If you suspect a cyber scam, report it through
+                the appropriate official channels.
+            </div>
+        `
+    }
+
+};
+
+
+/* ================= CURRENT LESSON ================= */
+
+let currentLesson = 0;
+
+
+/* ================= OPEN LESSON ================= */
+
+function openLesson(number) {
+
+    currentLesson = number;
+
+    const lesson = lessons[number];
+
+    document.getElementById("lessonTitle").innerText =
+        lesson.title;
+
+    document.getElementById("lessonContent").innerHTML =
+        lesson.content;
+
+    /*
+       Add YouTube video button
+    */
+
+    document.getElementById("lessonContent").innerHTML += `
+
+        <div style="
+            margin-top:25px;
+            padding:20px;
+            background:#f5f7fa;
+            border-radius:12px;
+            text-align:center;
+        ">
+
+            <h3 style="color:#071c45;">
+                🎥 Related Cyber Safety Video
+            </h3>
+
+            <p>
+                Watch this short video to understand
+                the topic better.
+            </p>
+
+            <a href="${lesson.video}"
+               target="_blank"
+               class="btn"
+               style="
+                    display:inline-block;
+                    background:#2f70bd;
+                    color:white;
+                    text-decoration:none;
+                    padding:12px 22px;
+                    border-radius:8px;
+                    font-weight:bold;
+               ">
+
+                ▶ Watch Video
+
+            </a>
+
+        </div>
+
+    `;
+
+    document.getElementById("lessonModal").style.display =
+        "flex";
+
+}
+
+
+/* ================= CLOSE LESSON ================= */
+
+function closeLesson() {
+
+    document.getElementById("lessonModal").style.display =
+        "none";
+
+}
+
+
+/* ================= COMPLETE LESSON ================= */
+
+function completeLesson() {
+
+    const countElement =
+        document.getElementById("completedCount");
+
+    let count =
+        parseInt(countElement.innerText);
+
+    if (count < 6) {
+
+        count++;
+
+        countElement.innerText =
+            count;
+
+        document.getElementById("points").innerText =
+            120 + ((count - 3) * 20);
+
+        const percentage =
+            Math.round((count / 6) * 100);
+
+        document.getElementById("progressText").innerText =
+            percentage + "%";
+
+        document.getElementById("progressBar").style.width =
+            percentage + "%";
+
+    }
+
+    alert("Lesson completed successfully! ✓");
+
+    closeLesson();
+
+}
+
+
+/* ================= CLOSE MODAL BY CLICKING OUTSIDE ================= */
+
+document.getElementById("lessonModal").addEventListener(
+    "click",
+    function(event) {
+
+        if (event.target === this) {
+            closeLesson();
+        }
+
+    }
+);
+
+</script>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

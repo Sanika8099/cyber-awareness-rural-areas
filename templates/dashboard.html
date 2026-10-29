@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Cyber Awareness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                <b>
+                    Cyber Awareness<br>
+                    in Rural Areas
+                </b>
+
+                <small>
+                    Campaign for Rural Development
+                </small>
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a class="active" href="{{ url_for('dashboard') }}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('learning') }}">
+                <i class="fa-solid fa-book-open"></i>
+                Learn Cyber Safety
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Report Cyber Scam
+            </a>
+
+            <a href="{{ url_for('feedback') }}">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Feedback & Survey
+            </a>
+
+            <a href="{{ url_for('helpline') }}">
+                <i class="fa-solid fa-phone"></i>
+                Emergency & Helpline
+            </a>
+
+            <a href="{{ url_for('government') }}">
+                <i class="fa-solid fa-landmark"></i>
+                Government Resources
+            </a>
+
+            <a href="{{ url_for('events') }}">
+                <i class="fa-solid fa-calendar-days"></i>
+                Upcoming Events
+            </a>
+
+            {% if role == "admin" %}
+
+            <a href="{{ url_for('admin_dashboard') }}">
+                <i class="fa-solid fa-shield-halved"></i>
+                Admin Dashboard
+            </a>
+
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+
+        </nav>
+
+
+        <div class="rural-art"></div>
+
+
+        <div class="side-bottom">
+
+            🛡️ Stay Safe Online,<br>
+            Stay Secure!
+
+            <br><br>
+
+            © 2025 Cyber Awareness Campaign<br>
+            for Rural Development
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= TOP BAR ================= -->
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <i class="fa-solid fa-bars hamb"
+               data-menu></i>
+
+            <span class="top-title">
+                Dashboard
+            </span>
+
+        </div>
+
+
+        <div class="top-right">
+
+            <span class="bell">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <b class="badge">3</b>
+
+            </span>
+
+
+            <div class="userbox">
+
+                <span class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+
+                <span>
+                    Hello,<br>
+                    <b>{{ current_user|capitalize }}</b>
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main">
+
+        <div class="container">
+
+
+            <!-- ================= HERO ================= -->
+
+            <div class="hero">
+
+                <h1>
+                    Welcome to Cyber Awareness Portal!
+                </h1>
+
+                <p>
+                    Be aware. Be safe. Together we build a secure rural community.
+                </p>
+
+                <div class="hero-art">
+                    🔐 💻 📡
+                </div>
+
+            </div>
+
+
+            <!-- ================= STATISTICS ================= -->
+
+            <div class="cards">
+
+
+                <!-- TOTAL USERS -->
+
+                <div class="stat">
+
+                    <div class="iconbox">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div>
+
+                        <h4>Total Users</h4>
+
+                        <strong>
+                            {{ total_users }}
+                        </strong>
+
+                        <small>
+                            Registered users
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL REPORTS -->
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#eaf8ef;color:#159653;">
+
+                        <i class="fa-solid fa-file-lines"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Total Reports</h4>
+
+                        <strong>
+                            {{ total_reports }}
+                        </strong>
+
+                        <small>
+                            Submitted reports
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PENDING -->
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#fff5df;color:#e99d00;">
+
+                        <i class="fa-solid fa-hourglass-half"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Pending Reports</h4>
+
+                        <strong>
+                            {{ pending_reports }}
+                        </strong>
+
+                        <small>
+                            Awaiting review
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESOLVED -->
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#f0eaff;color:#7034d4;">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Resolved Reports</h4>
+
+                        <strong>
+                            {{ resolved_reports }}
+                        </strong>
+
+                        <small>
+                            Successfully resolved
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MAIN GRID ================= -->
+
+            <div class="grid-main">
+
+
+                <!-- CYBER SAFETY TIP -->
+
+                <section class="panel">
+
+                    <h3 style="color:#075bd7;">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        Cyber Safety Tip of the Day
+
+                    </h3>
+
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                    ">
+
+                        <div>
+
+                            <p>
+                                Never share your OTP, PIN, or password with anyone.
+                            </p>
+
+                            <p>
+                                Banks or government officials will never ask for it.
+                            </p>
+
+                            <a href="{{ url_for('learning') }}"
+                               class="btn">
+
+                                <i class="fa-solid fa-book-open"></i>
+                                Learn More
+
+                            </a>
+
+                        </div>
+
+
+                        <div style="font-size:70px;">
+                            📱🛡️
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- HELPLINE -->
+
+                <section class="panel"
+                         style="text-align:center;">
+
+                    <h3 style="color:#d72732;">
+
+                        <i class="fa-solid fa-phone-volume"></i>
+
+                        Important Helpline
+
+                    </h3>
+
+
+                    <div style="
+                        font-size:48px;
+                        font-weight:700;
+                        color:#083b91;
+                    ">
+
+                        ☎ 1930
+
+                    </div>
+
+
+                    <p>
+                        National Cyber Crime Helpline
+                    </p>
+
+
+                    <a class="btn red"
+                       href="tel:1930">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        Call Now
+
+                    </a>
+
+                </section>
+
+
+                <!-- RECENT ALERTS -->
+
+                <section class="panel">
+
+                    <div class="panel-title">
+
+                        <h3 style="color:#075bd7;">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                            Recent Alerts
+
+                        </h3>
+
+                    </div>
+
+
+                    <ul class="checklist">
+
+                        <li>
+
+                            🔴
+                            New phishing messages targeting UPI users.
+
+                            <small>
+                                2 hours ago
+                            </small>
+
+                        </li>
+
+
+                        <li>
+
+                            🟠
+                            Fake loan apps are active. Stay alert!
+
+                            <small>
+                                1 day ago
+                            </small>
+
+                        </li>
+
+
+                        <li>
+
+                            🔵
+                            Do not click on unknown links in SMS or emails.
+
+                            <small>
+                                2 days ago
+                            </small>
+
+                        </li>
+
+                    </ul>
+
+
+                    <a href="{{ url_for('report') }}"
+                       class="btn outline">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Report Suspicious Activity
+
+                    </a>
+
+                </section>
+
+            </div>
+
+
+            <!-- ================= QUICK ACCESS ================= -->
+
+            <div class="panel"
+                 style="margin-top:18px;">
+
+                <h3>
+                    Quick Access
+                </h3>
+
+
+                <div class="quick">
+
+
+                    <a class="quick-item"
+                       href="{{ url_for('learning') }}">
+
+                        <div class="iconbox">
+
+                            <i class="fa-solid fa-book-open"></i>
+
+                        </div>
+
+                        <b>
+                            Learn Cyber Safety
+                        </b>
+
+                    </a>
+
+
+                    <a class="quick-item"
+                       href="{{ url_for('report') }}">
+
+                        <div class="iconbox">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        </div>
+
+                        <b>
+                            Report Cyber Scam
+                        </b>
+
+                    </a>
+
+
+                    <a class="quick-item"
+                       href="{{ url_for('feedback') }}">
+
+                        <div class="iconbox">
+
+                            <i class="fa-solid fa-comment-dots"></i>
+
+                        </div>
+
+                        <b>
+                            Feedback & Survey
+                        </b>
+
+                    </a>
+
+
+                    <a class="quick-item"
+                       href="{{ url_for('helpline') }}">
+
+                        <div class="iconbox">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                        </div>
+
+                        <b>
+                            Emergency & Helpline
+                        </b>
+
+                    </a>
+
+
+                    <a class="quick-item"
+                       href="{{ url_for('government') }}">
+
+                        <div class="iconbox">
+
+                            <i class="fa-solid fa-landmark"></i>
+
+                        </div>
+
+                        <b>
+                            Government Resources
+                        </b>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= SAFE PRACTICES ================= -->
+
+            <div class="grid2"
+                 style="margin-top:18px;">
+
+
+                <!-- SAFE PRACTICES -->
+
+                <section class="panel">
+
+                    <h3>
+
+                        <i class="fa-solid fa-circle-check"
+                           style="color:#159653;"></i>
+
+                        Follow Safe Practices
+
+                    </h3>
+
+
+                    <ul class="checklist">
+
+                        <li>
+                            🟢 Use strong and unique passwords
+                        </li>
+
+                        <li>
+                            🟢 Enable two-factor authentication
+                        </li>
+
+                        <li>
+                            🟢 Never share OTP or PIN
+                        </li>
+
+                        <li>
+                            🟢 Keep your software updated
+                        </li>
+
+                        <li>
+                            🟢 Report suspicious activity
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+                <!-- CYBER SAFE RURAL INDIA -->
+
+                <section class="notice">
+
+                    <h3>
+
+                        🛡️ Together for a Cyber Safe Rural India
+
+                    </h3>
+
+                    <p>
+
+                        Stay informed, stay safe and help your
+                        community become cyber aware.
+
+                    </p>
+
+
+                    <a href="{{ url_for('government') }}"
+                       class="btn">
+
+                        <i class="fa-solid fa-landmark"></i>
+
+                        Explore Resources
+
+                    </a>
+
+                </section>
+
+            </div>
+
+
+            <!-- ================= FOOTER ================= -->
+
+            <div class="footer">
+
+                <span>
+
+                    © 2025 Cyber Awareness Campaign
+                    for Rural Development
+
+                </span>
+
+
+                <span>
+
+                    About Us |
+                    Privacy Policy |
+                    Terms & Conditions |
+                    Contact Us
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

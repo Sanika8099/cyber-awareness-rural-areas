@@ -1,0 +1,1058 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Upcoming Events & Campaigns</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                <b>
+                    Cyber Awareness<br>
+                    in Rural Areas
+                </b>
+
+                <small>
+                    Campaign for Rural Development
+                </small>
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="{{ url_for('dashboard') }}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('learning') }}">
+                <i class="fa-solid fa-book-open"></i>
+                Learn Cyber Safety
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Report Cyber Scam
+            </a>
+
+            <a href="{{ url_for('feedback') }}">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Feedback & Survey
+            </a>
+
+            <a href="{{ url_for('helpline') }}">
+                <i class="fa-solid fa-phone"></i>
+                Emergency & Helpline
+            </a>
+
+            <a href="{{ url_for('government') }}">
+                <i class="fa-solid fa-landmark"></i>
+                Government Resources
+            </a>
+
+            <a class="active" href="{{ url_for('events') }}">
+                <i class="fa-solid fa-calendar-days"></i>
+                Upcoming Events
+            </a>
+
+            {% if role == 'admin' %}
+
+            <a href="{{ url_for('admin_dashboard') }}">
+                <i class="fa-solid fa-shield-halved"></i>
+                Admin Dashboard
+            </a>
+
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+
+        </nav>
+
+
+        <div class="rural-art"></div>
+
+
+        <div class="side-bottom">
+
+            🛡️ Stay Safe Online,<br>
+            Stay Secure!
+
+            <br><br>
+
+            © 2026 Cyber Awareness Campaign<br>
+            for Rural Development
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= TOPBAR ================= -->
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <i class="fa-solid fa-bars hamb" data-menu></i>
+
+            <span class="top-title">
+                Upcoming Events & Campaigns
+            </span>
+
+        </div>
+
+
+        <div class="top-right">
+
+            <span class="bell">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <b class="badge">3</b>
+
+            </span>
+
+
+            <div class="userbox">
+
+                <span class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+
+                <span>
+                    Hello,<br>
+                    <b>{{ current_user|capitalize }}</b>
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <div class="container">
+
+
+            <!-- ================= PAGE HEADER ================= -->
+
+            <div class="page-head">
+
+                <div>
+
+                    <h1>
+                        Upcoming Events & Campaigns
+                    </h1>
+
+                    <p>
+                        Stay updated with upcoming cyber awareness
+                        events, workshops and campaigns in your area.
+                    </p>
+
+                </div>
+
+                <div style="font-size:60px;">
+                    📅 📣
+                </div>
+
+            </div>
+
+
+            <!-- ================= STAT CARDS ================= -->
+
+            <div class="cards">
+
+                <div class="stat">
+
+                    <div class="iconbox">
+                        📅
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Upcoming Events
+                        </h4>
+
+                        <strong>
+                            04
+                        </strong>
+
+                        <small>
+                            This Month
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#eaf8ef;color:#159653">
+
+                        👥
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Workshops
+                        </h4>
+
+                        <strong>
+                            02
+                        </strong>
+
+                        <small>
+                            This Month
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#fff5df;color:#e99d00">
+
+                        📣
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Awareness Campaigns
+                        </h4>
+
+                        <strong>
+                            02
+                        </strong>
+
+                        <small>
+                            This Month
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#f0eaff;color:#7034d4">
+
+                        📍
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Events Near You
+                        </h4>
+
+                        <strong>
+                            03
+                        </strong>
+
+                        <small>
+                            This Month
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= EVENTS + SIDEBAR ================= -->
+
+            <div class="grid2">
+
+
+                <!-- ================= UPCOMING EVENTS ================= -->
+
+                <section class="panel">
+
+                    <div class="panel-title">
+
+                        <h3>
+                            <i class="fa-solid fa-calendar-check"></i>
+                            Upcoming Events
+                        </h3>
+
+                        <span style="font-size:13px;color:#69738a;">
+                            September 2026
+                        </span>
+
+                    </div>
+
+
+                    <div class="event-list">
+
+
+                        <!-- EVENT 1 -->
+
+                        <div class="event">
+
+                            <div class="datebox">
+
+                                <b>05</b>
+
+                                SEP 2026
+
+                            </div>
+
+                            <div style="flex:1;">
+
+                                <h4>
+                                    Cyber Safety Awareness Campaign
+                                </h4>
+
+                                <p>
+                                    📍 Gram Panchayat Hall, Village Center
+                                </p>
+
+                                <p>
+                                    ◷ 10:00 AM – 01:00 PM
+                                </p>
+
+                                <small style="color:#075bd7;">
+                                    Awareness Campaign
+                                </small>
+
+                            </div>
+
+                            <button class="btn"
+                                    onclick="showEvent(
+                                    'Cyber Safety Awareness Campaign',
+                                    '05 September 2026',
+                                    'Gram Panchayat Hall, Village Center',
+                                    '10:00 AM – 01:00 PM'
+                                    )">
+
+                                View Details
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- EVENT 2 -->
+
+                        <div class="event">
+
+                            <div class="datebox">
+
+                                <b>12</b>
+
+                                SEP 2026
+
+                            </div>
+
+                            <div style="flex:1;">
+
+                                <h4>
+                                    Workshop: Safe Internet Practices
+                                </h4>
+
+                                <p>
+                                    📍 Zilla Parishad School, Block Office
+                                </p>
+
+                                <p>
+                                    ◷ 11:00 AM – 02:00 PM
+                                </p>
+
+                                <small style="color:#075bd7;">
+                                    Workshop
+                                </small>
+
+                            </div>
+
+                            <button class="btn"
+                                    onclick="showEvent(
+                                    'Workshop: Safe Internet Practices',
+                                    '12 September 2026',
+                                    'Zilla Parishad School, Block Office',
+                                    '11:00 AM – 02:00 PM'
+                                    )">
+
+                                View Details
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- EVENT 3 -->
+
+                        <div class="event">
+
+                            <div class="datebox">
+
+                                <b>19</b>
+
+                                SEP 2026
+
+                            </div>
+
+                            <div style="flex:1;">
+
+                                <h4>
+                                    Interactive Session on Cyber Scams
+                                </h4>
+
+                                <p>
+                                    📍 Community Center, Village Center
+                                </p>
+
+                                <p>
+                                    ◷ 03:00 PM – 05:00 PM
+                                </p>
+
+                                <small style="color:#075bd7;">
+                                    Awareness Session
+                                </small>
+
+                            </div>
+
+                            <button class="btn"
+                                    onclick="showEvent(
+                                    'Interactive Session on Cyber Scams',
+                                    '19 September 2026',
+                                    'Community Center, Village Center',
+                                    '03:00 PM – 05:00 PM'
+                                    )">
+
+                                View Details
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- EVENT 4 -->
+
+                        <div class="event">
+
+                            <div class="datebox">
+
+                                <b>26</b>
+
+                                SEP 2026
+
+                            </div>
+
+                            <div style="flex:1;">
+
+                                <h4>
+                                    Digital Security for Rural Citizens
+                                </h4>
+
+                                <p>
+                                    📍 Taluka Office Auditorium
+                                </p>
+
+                                <p>
+                                    ◷ 10:30 AM – 12:30 PM
+                                </p>
+
+                                <small style="color:#075bd7;">
+                                    Digital Security Program
+                                </small>
+
+                            </div>
+
+                            <button class="btn"
+                                    onclick="showEvent(
+                                    'Digital Security for Rural Citizens',
+                                    '26 September 2026',
+                                    'Taluka Office Auditorium',
+                                    '10:30 AM – 12:30 PM'
+                                    )">
+
+                                View Details
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <button class="btn outline"
+                            style="width:100%;margin-top:15px;"
+                            onclick="viewAllEvents()">
+
+                        View All Events →
+
+                    </button>
+
+                </section>
+
+
+                <!-- ================= RIGHT SIDE ================= -->
+
+                <aside class="side-stack">
+
+
+                    <!-- ================= HIGHLIGHTS ================= -->
+
+                    <section class="panel">
+
+                        <h3>
+
+                            <i class="fa-solid fa-star"></i>
+
+                            Event Highlights
+
+                        </h3>
+
+                        <ul class="checklist">
+
+                            <li>
+                                🔵 Learn how to stay safe online
+                            </li>
+
+                            <li>
+                                🔵 Protect yourself from cyber scams
+                            </li>
+
+                            <li>
+                                🔵 Free participation and certificates
+                            </li>
+
+                            <li>
+                                🔵 Open for rural communities
+                            </li>
+
+                        </ul>
+
+                    </section>
+
+
+                    <!-- ================= FIND EVENTS ================= -->
+
+                    <section class="panel">
+
+                        <h3>
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Find Events Near You
+
+                        </h3>
+
+
+                        <div class="field">
+
+                            <input
+                                id="locationInput"
+                                type="text"
+                                maxlength="50"
+                                placeholder="Enter your village or pincode">
+
+                        </div>
+
+
+                        <button class="btn"
+                                onclick="searchEvents()">
+
+                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                            Search
+
+                        </button>
+
+
+                        <!-- SEARCH RESULT -->
+
+                        <div id="searchResult"
+                             style="
+                             margin-top:12px;
+                             padding:12px;
+                             background:#f5f8ff;
+                             border-radius:8px;
+                             display:none;
+                             font-size:13px;
+                             line-height:1.6;
+                             ">
+
+                        </div>
+
+
+                        <!-- MAP STYLE AREA -->
+
+                        <div id="eventMap"
+                             style="
+                             height:130px;
+                             background:linear-gradient(135deg,#e8f3ff,#dcefd8);
+                             border-radius:9px;
+                             margin-top:12px;
+                             display:grid;
+                             place-items:center;
+                             text-align:center;
+                             font-size:22px;
+                             padding:10px;
+                             ">
+
+                            <div>
+
+                                🗺️ 📍 📍
+
+                                <br>
+
+                                <small style="
+                                    font-size:11px;
+                                    color:#69738a;
+                                ">
+
+                                    Search your village or pincode
+                                    to find nearby events
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ================= NOTIFICATION ================= -->
+
+                    <section class="panel">
+
+                        <h3>
+
+                            <i class="fa-solid fa-bell"></i>
+
+                            Get Notified About New Events
+
+                        </h3>
+
+
+                        <p style="
+                            font-size:12px;
+                            color:#69738a;
+                        ">
+
+                            Subscribe to receive updates about upcoming
+                            cyber awareness events and workshops.
+
+                        </p>
+
+
+                        <div style="
+                            display:flex;
+                            gap:8px;
+                        ">
+
+                            <input
+                                id="eventEmail"
+                                type="email"
+                                style="
+                                flex:1;
+                                border:1px solid #d8dee9;
+                                border-radius:7px;
+                                padding:11px;
+                                "
+                                placeholder="Enter your email address">
+
+
+                            <button class="btn"
+                                    onclick="subscribeEvents()">
+
+                                Subscribe
+
+                            </button>
+
+                        </div>
+
+
+                        <small id="subscribeMessage"
+                               style="
+                               display:block;
+                               margin-top:8px;
+                               ">
+
+                        </small>
+
+                    </section>
+
+                </aside>
+
+            </div>
+
+
+            <!-- ================= INFORMATION NOTICE ================= -->
+
+            <div class="notice"
+                 style="margin-top:18px;">
+
+                <h3>
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    Stay Informed, Stay Safe.
+
+                </h3>
+
+                <p>
+
+                    Join our awareness activities and learn practical
+                    ways to protect yourself, your family and your
+                    community from cyber threats.
+
+                </p>
+
+            </div>
+
+
+            <!-- ================= FOOTER ================= -->
+
+            <div class="footer">
+
+                <span>
+
+                    © 2026 Cyber Awareness Campaign
+                    for Rural Development |
+                    All Rights Reserved
+
+                </span>
+
+                <span>
+
+                    About Us |
+                    Privacy Policy |
+                    Terms & Conditions |
+                    Contact Us
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+/* =====================================================
+   EVENT DETAILS
+   ===================================================== */
+
+function showEvent(title, date, place, time) {
+
+    alert(
+        "📅 EVENT DETAILS\n\n" +
+
+        "Event: " + title + "\n" +
+
+        "Date: " + date + "\n" +
+
+        "Venue: " + place + "\n" +
+
+        "Time: " + time + "\n\n" +
+
+        "✓ Free participation\n" +
+
+        "✓ Cyber awareness session"
+    );
+
+}
+
+
+/* =====================================================
+   VIEW ALL EVENTS
+   ===================================================== */
+
+function viewAllEvents() {
+
+    alert(
+        "📅 UPCOMING EVENTS\n\n" +
+
+        "1. Cyber Safety Awareness Campaign\n" +
+        "05 September 2026\n\n" +
+
+        "2. Workshop: Safe Internet Practices\n" +
+        "12 September 2026\n\n" +
+
+        "3. Interactive Session on Cyber Scams\n" +
+        "19 September 2026\n\n" +
+
+        "4. Digital Security for Rural Citizens\n" +
+        "26 September 2026"
+    );
+
+}
+
+
+/* =====================================================
+   FIND EVENTS NEAR YOU
+   ===================================================== */
+
+function searchEvents() {
+
+    const input =
+        document.getElementById("locationInput");
+
+    const result =
+        document.getElementById("searchResult");
+
+    const map =
+        document.getElementById("eventMap");
+
+    const location =
+        input.value.trim();
+
+
+    /* EMPTY INPUT */
+
+    if (location === "") {
+
+        result.style.display = "block";
+
+        result.style.background = "#fff5f5";
+
+        result.style.color = "#d72732";
+
+        result.innerHTML =
+            "⚠️ Please enter your village name or 6-digit pincode.";
+
+        return;
+
+    }
+
+
+    /* PINCODE VALIDATION */
+
+    if (/^\d+$/.test(location) && location.length !== 6) {
+
+        result.style.display = "block";
+
+        result.style.background = "#fff5f5";
+
+        result.style.color = "#d72732";
+
+        result.innerHTML =
+            "⚠️ Please enter a valid 6-digit pincode.";
+
+        return;
+
+    }
+
+
+    /* SUCCESS RESULT */
+
+    result.style.display = "block";
+
+    result.style.background = "#f0f8ff";
+
+    result.style.color = "#083b91";
+
+
+    result.innerHTML =
+
+        "<strong>📍 Events near " +
+        location +
+        "</strong>" +
+
+        "<br><br>" +
+
+        "🔵 Cyber Safety Awareness Campaign" +
+
+        "<br>" +
+
+        "<small>05 September 2026 • 10:00 AM</small>" +
+
+        "<br><br>" +
+
+        "🟢 Workshop: Safe Internet Practices" +
+
+        "<br>" +
+
+        "<small>12 September 2026 • 11:00 AM</small>" +
+
+        "<br><br>" +
+
+        "🟣 Interactive Session on Cyber Scams" +
+
+        "<br>" +
+
+        "<small>19 September 2026 • 03:00 PM</small>";
+
+
+    /* UPDATE MAP AREA */
+
+    map.innerHTML =
+
+        "<div>" +
+
+        "<div style='font-size:42px;'>📍</div>" +
+
+        "<strong style='color:#083b91;'>" +
+
+        location +
+
+        "</strong>" +
+
+        "<br>" +
+
+        "<small style='font-size:11px;color:#69738a;'>" +
+
+        "Nearby cyber awareness events" +
+
+        "</small>" +
+
+        "</div>";
+
+}
+
+
+/* =====================================================
+   SUBSCRIBE
+   ===================================================== */
+
+function subscribeEvents() {
+
+    const email =
+        document.getElementById("eventEmail").value.trim();
+
+    const message =
+        document.getElementById("subscribeMessage");
+
+
+    /* EMPTY */
+
+    if (email === "") {
+
+        message.style.color = "#d72732";
+
+        message.innerText =
+            "⚠️ Please enter your email address.";
+
+        return;
+
+    }
+
+
+    /* EMAIL VALIDATION */
+
+    const emailPattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+    if (!emailPattern.test(email)) {
+
+        message.style.color = "#d72732";
+
+        message.innerText =
+            "⚠️ Please enter a valid email address.";
+
+        return;
+
+    }
+
+
+    /* SUCCESS */
+
+    message.style.color = "#159653";
+
+    message.innerText =
+        "✓ Successfully subscribed for event updates.";
+
+    document.getElementById("eventEmail").value = "";
+
+}
+
+
+/* =====================================================
+   ENTER KEY SEARCH
+   ===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const input =
+            document.getElementById("locationInput");
+
+
+        if (input) {
+
+            input.addEventListener(
+                "keypress",
+                function (event) {
+
+                    if (event.key === "Enter") {
+
+                        searchEvents();
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

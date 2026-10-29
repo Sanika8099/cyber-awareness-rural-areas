@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Details | Cyber Awareness</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        .evidence-area {
+            margin-top: 8px;
+        }
+
+        .evidence-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 14px;
+            border-radius: 8px;
+            background: #eaf2ff;
+            color: #075bd7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .evidence-link:hover {
+            background: #dceaff;
+        }
+
+        .evidence-preview {
+            margin-top: 12px;
+            max-width: 320px;
+            max-height: 220px;
+            border-radius: 10px;
+            border: 1px solid #dbe6f5;
+            display: block;
+            object-fit: contain;
+        }
+
+        .evidence-name {
+            display: block;
+            margin-top: 8px;
+            color: #69738a;
+            font-size: 12px;
+            word-break: break-word;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <b>
+                        Cyber Awareness<br>
+                        in Rural Areas
+                    </b>
+                    <small>Campaign for Rural Development</small>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <a href="{{ url_for('dashboard') }}">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('learning') }}">
+                    <i class="fa-solid fa-book-open"></i>
+                    Learn Cyber Safety
+                </a>
+
+                <a href="{{ url_for('report') }}">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Report Cyber Scam
+                </a>
+
+                <a href="{{ url_for('feedback') }}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Feedback &amp; Survey
+                </a>
+
+                <a href="{{ url_for('helpline') }}">
+                    <i class="fa-solid fa-phone"></i>
+                    Emergency &amp; Helpline
+                </a>
+
+                <a href="{{ url_for('government') }}">
+                    <i class="fa-solid fa-landmark"></i>
+                    Government Resources
+                </a>
+
+                <a href="{{ url_for('events') }}">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Upcoming Events
+                </a>
+
+                <a class="active" href="{{ url_for('admin_dashboard') }}">
+                    <i class="fa-solid fa-user-shield"></i>
+                    Admin Dashboard
+                </a>
+
+                <a href="{{ url_for('logout') }}">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </nav>
+
+            <div class="rural-art"></div>
+
+            <div class="side-bottom">
+                🛡️ Stay Safe Online,<br>
+                Stay Secure!
+                <br><br>
+                © 2025 Cyber Awareness Campaign<br>
+                for Rural Development
+            </div>
+        </aside>
+
+        <header class="topbar">
+            <div class="top-left">
+                <i class="fa-solid fa-bars hamb" data-menu></i>
+                <span class="top-title">Report Details</span>
+            </div>
+
+            <div class="top-right">
+                <span class="bell">
+                    <i class="fa-regular fa-bell"></i>
+                </span>
+
+                <div class="userbox">
+                    <span class="avatar">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
+
+                    <span>
+                        Hello,<br>
+                        <b>{{ current_user|capitalize }}</b>
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+
+                <div class="page-head">
+                    <div>
+                        <h1>Cyber Scam Report #{{ report.id }}</h1>
+                        <p>View the submitted report information.</p>
+                    </div>
+
+                    <a href="{{ url_for('admin_reports') }}" class="btn outline">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Reports
+                    </a>
+                </div>
+
+                <section class="panel">
+                    <div class="panel-title">
+                        <h3>
+                            <i class="fa-solid fa-circle-info"></i>
+                            Current Status
+                        </h3>
+
+                        {% if report.status == "Resolved" %}
+                        <span class="pill green">
+                            <i class="fa-solid fa-check"></i>
+                            Resolved
+                        </span>
+                        {% elif report.status == "Under Review" %}
+                        <span class="pill" style="background:#eaf2ff;color:#075bd7;">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Under Review
+                        </span>
+                        {% else %}
+                        <span class="pill">
+                            <i class="fa-solid fa-clock"></i>
+                            Pending
+                        </span>
+                        {% endif %}
+                    </div>
+                </section>
+
+                <section class="panel" style="margin-top:18px;">
+                    <h3>
+                        <i class="fa-solid fa-file-lines"></i>
+                        Report Information
+                    </h3>
+
+                    <div style="
+                    display:grid;
+                    grid-template-columns:repeat(2,1fr);
+                    gap:20px;
+                    margin-top:20px;
+                ">
+
+                        <div>
+                            <strong>Report ID</strong>
+                            <p>#{{ report.id }}</p>
+                        </div>
+
+                        <div>
+                            <strong>Submitted By</strong>
+                            <p>{{ report.username or "Guest" }}</p>
+                        </div>
+
+                        <div>
+                            <strong>Scam Type</strong>
+                            <p>{{ report.scam_type or "Not specified" }}</p>
+                        </div>
+
+                        <div>
+                            <strong>Incident Date</strong>
+                            <p>{{ report.incident_date or "Not specified" }}</p>
+                        </div>
+
+                        <div>
+                            <strong>Contact</strong>
+                            <p>{{ report.contact or "Not provided" }}</p>
+                        </div>
+
+                        <div>
+                            <strong>Financial Loss</strong>
+                            <p>{{ report.financial_loss or "Not specified" }}</p>
+                        </div>
+
+                        <div>
+                            <strong>Submitted On</strong>
+                            <p>{{ report.created_at or "Not available" }}</p>
+                        </div>
+
+                        <div>
+                            <strong>Evidence</strong>
+
+                            {% if report.evidence %}
+                            <div class="evidence-area">
+
+                                <a href="{{ url_for('admin_evidence', filename=report.evidence) }}" target="_blank"
+                                    rel="noopener noreferrer" class="evidence-link">
+                                    <i class="fa-solid fa-paperclip"></i>
+                                    Open Attachment
+                                </a>
+
+                                <span class="evidence-name">
+                                    {{ report.evidence }}
+                                </span>
+
+                                {% if report.evidence.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                                <img src="{{ url_for('admin_evidence', filename=report.evidence) }}"
+                                    alt="Uploaded evidence" class="evidence-preview">
+                                {% endif %}
+
+                            </div>
+                            {% else %}
+                            <p>No evidence uploaded.</p>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="panel" style="margin-top:18px;">
+                    <h3>
+                        <i class="fa-solid fa-align-left"></i>
+                        Incident Description
+                    </h3>
+
+                    <div style="
+                    margin-top:15px;
+                    padding:18px;
+                    background:#f7f9fc;
+                    border-radius:10px;
+                    line-height:1.7;
+                ">
+                        {{ report.description or "No description provided." }}
+                    </div>
+                </section>
+
+                {% if report.status != "Resolved" %}
+                <section class="panel" style="margin-top:18px;border-left:4px solid #16a34a;">
+                    <h3 style="color:#15803d;">
+                        <i class="fa-solid fa-check-circle"></i>
+                        Resolve Report
+                    </h3>
+
+                    <p>
+                        Once the report has been reviewed, the administrator can mark it as resolved.
+                    </p>
+
+                    <form method="POST" action="{{ url_for('update_report_status', report_id=report.id) }}">
+                        <input type="hidden" name="status" value="Resolved">
+
+                        <button type="submit" class="btn" style="background:#16a34a;margin-top:10px;">
+                            <i class="fa-solid fa-check"></i>
+                            Mark as Resolved
+                        </button>
+                    </form>
+                </section>
+                {% endif %}
+
+                <section class="panel" style="margin-top:18px;border-left:4px solid #d72732;">
+
+                    <h3 style="color:#d72732;">
+                        <i class="fa-solid fa-trash"></i>
+                        Delete Report
+                    </h3>
+
+                    <p>
+                        This will permanently remove the report from the system.
+                    </p>
+
+                    <form method="POST" action="{{ url_for('delete_report', report_id=report.id) }}"
+                        onsubmit="return confirm('Are you sure you want to permanently delete this report?');">
+
+                        <button type="submit" class="btn" style="background:#d72732;margin-top:10px;">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete Report
+                        </button>
+                    </form>
+                </section>
+
+                <div class="footer">
+                    <span>
+                        © 2025 Cyber Awareness Campaign for Rural Development
+                        | All Rights Reserved
+                    </span>
+
+                    <span>
+                        About Us | Privacy Policy | Terms &amp; Conditions | Contact Us
+                    </span>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

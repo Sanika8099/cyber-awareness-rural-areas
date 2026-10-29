@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Users | Cyber Awareness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        .user-table-wrap {
+            overflow-x: auto;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #edf1f7;
+        }
+
+        .user-table th {
+            color: #536078;
+            font-size: 13px;
+            background: #f8faff;
+        }
+
+        .user-table td {
+            font-size: 14px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: inline-grid;
+            place-items: center;
+            background: #eaf2ff;
+            color: #075bd7;
+            margin-right: 8px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .role-admin {
+            background: #eee8ff;
+            color: #6937c9;
+        }
+
+        .role-user {
+            background: #eaf2ff;
+            color: #075bd7;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 15px;
+            color: #69738a;
+        }
+
+        .empty-state i {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                <b>
+                    Cyber Awareness<br>
+                    in Rural Areas
+                </b>
+
+                <small>
+                    Campaign for Rural Development
+                </small>
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="{{ url_for('dashboard') }}">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('learning') }}">
+                <i class="fa-solid fa-book-open"></i>
+                Learn Cyber Safety
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Report Cyber Scam
+            </a>
+
+            <a href="{{ url_for('feedback') }}">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Feedback & Survey
+            </a>
+
+            <a href="{{ url_for('helpline') }}">
+                <i class="fa-solid fa-phone"></i>
+                Emergency & Helpline
+            </a>
+
+            <a href="{{ url_for('government') }}">
+                <i class="fa-solid fa-landmark"></i>
+                Government Resources
+            </a>
+
+            <a href="{{ url_for('events') }}">
+                <i class="fa-solid fa-calendar-days"></i>
+                Upcoming Events
+            </a>
+
+            <a class="active"
+               href="{{ url_for('admin_dashboard') }}">
+                <i class="fa-solid fa-user-shield"></i>
+                Admin Dashboard
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+
+        </nav>
+
+
+        <div class="rural-art"></div>
+
+
+        <div class="side-bottom">
+
+            🛡️ Stay Safe Online,<br>
+            Stay Secure!
+
+            <br><br>
+
+            © 2025 Cyber Awareness Campaign<br>
+            for Rural Development
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= TOPBAR ================= -->
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <i class="fa-solid fa-bars hamb" data-menu></i>
+
+            <span class="top-title">
+                Manage Users
+            </span>
+
+        </div>
+
+
+        <div class="top-right">
+
+            <span class="bell">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <b class="badge">
+                    {{ users|length }}
+                </b>
+
+            </span>
+
+
+            <div class="userbox">
+
+                <span class="avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </span>
+
+                <span>
+                    Hello,<br>
+                    <b>{{ current_user|capitalize }}</b>
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <div class="container">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-head">
+
+                <div>
+
+                    <h1>
+                        Manage Users
+                    </h1>
+
+                    <p>
+                        View registered users and their account information.
+                    </p>
+
+                </div>
+
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="btn outline">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Admin Dashboard
+
+                </a>
+
+            </div>
+
+
+
+            <!-- USER STATISTICS -->
+
+            <div class="cards">
+
+
+                <div class="stat">
+
+                    <div class="iconbox">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div>
+
+                        <h4>Total Users</h4>
+
+                        <strong>
+                            {{ users|length }}
+                        </strong>
+
+                        <small>
+                            Registered accounts
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#eee8ff;color:#6937c9;">
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Administrators</h4>
+
+                        <strong>
+                            {{ users|selectattr('role','equalto','admin')|list|length }}
+                        </strong>
+
+                        <small>
+                            Admin accounts
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#eaf2ff;color:#075bd7;">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>Citizens</h4>
+
+                        <strong>
+                            {{ users|selectattr('role','equalto','user')|list|length }}
+                        </strong>
+
+                        <small>
+                            Regular users
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="iconbox"
+                         style="background:#e4f8ed;color:#18824a;">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>System Status</h4>
+
+                        <strong style="font-size:22px;">
+                            Active
+                        </strong>
+
+                        <small>
+                            User management online
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- USERS TABLE -->
+
+            <section class="panel">
+
+                <div class="panel-title">
+
+                    <h3>
+
+                        <i class="fa-solid fa-users"
+                           style="color:#075bd7;"></i>
+
+                        Registered Users
+
+                    </h3>
+
+                    <span class="pill">
+                        {{ users|length }} Users
+                    </span>
+
+                </div>
+
+
+                <div class="user-table-wrap">
+
+                    <table class="user-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>User</th>
+
+                                <th>Username</th>
+
+                                <th>Email</th>
+
+                                <th>Role</th>
+
+                                <th>Account Status</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for user in users %}
+
+                            <tr>
+
+                                <td>
+                                    #{{ user.id }}
+                                </td>
+
+
+                                <td>
+
+                                    <div class="user-info">
+
+                                        <span class="user-avatar">
+
+                                            {% if user.role == "admin" %}
+
+                                                <i class="fa-solid fa-user-shield"></i>
+
+                                            {% else %}
+
+                                                <i class="fa-solid fa-user"></i>
+
+                                            {% endif %}
+
+                                        </span>
+
+
+                                        <strong>
+                                            {{ user.full_name or user.username }}
+                                        </strong>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+                                    {{ user.username }}
+                                </td>
+
+
+                                <td>
+                                    {{ user.email or "Not provided" }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if user.role == "admin" %}
+
+                                        <span class="pill role-admin">
+
+                                            <i class="fa-solid fa-shield-halved"></i>
+
+                                            Administrator
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="pill role-user">
+
+                                            <i class="fa-solid fa-user"></i>
+
+                                            Citizen
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="pill green">
+
+                                        <i class="fa-solid fa-circle"></i>
+
+                                        Active
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="6">
+
+                                    <div class="empty-state">
+
+                                        <i class="fa-solid fa-users-slash"></i>
+
+                                        <h3>
+                                            No Users Found
+                                        </h3>
+
+                                        <p>
+                                            There are no registered users in the system.
+                                        </p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- SECURITY INFORMATION -->
+
+            <section class="panel" style="margin-top:18px;">
+
+                <h3>
+
+                    <i class="fa-solid fa-shield-halved"
+                       style="color:#075bd7;"></i>
+
+                    User Management & Security
+
+                </h3>
+
+
+                <div class="grid2">
+
+                    <div>
+
+                        <p>
+
+                            <i class="fa-solid fa-user-plus"
+                               style="color:#075bd7;"></i>
+
+                            New citizens can create accounts through
+                            the <strong>Register</strong> page.
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p>
+
+                            <i class="fa-solid fa-lock"
+                               style="color:#18824a;"></i>
+
+                            Only authenticated administrators can access
+                            this user-management section.
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p>
+
+                            <i class="fa-solid fa-database"
+                               style="color:#075bd7;"></i>
+
+                            User information is stored in the project's
+                            SQLite database.
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p>
+
+                            <i class="fa-solid fa-shield-virus"
+                               style="color:#6937c9;"></i>
+
+                            Administrator accounts have protected access
+                            to system management features.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- FOOTER -->
+
+            <div class="footer">
+
+                <span>
+                    © 2025 Cyber Awareness Campaign for Rural Development
+                    | All Rights Reserved
+                </span>
+
+                <span>
+                    About Us | Privacy Policy | Terms & Conditions | Contact Us
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
